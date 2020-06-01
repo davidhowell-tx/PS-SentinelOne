@@ -36,7 +36,7 @@ Installation of this module currently consists of a pair of scripts that will co
 PS-SentinelOne includes commandlets to configure information specific to your environment, such as the URI of your SentinelOne console, and your API Token.
 You may choose to  cache this information for the current session, or save the information to disk. Saved API Tokens are protected by using secure strings.
 
-### In Session
+### In Session Configuration
 
 Commandlets will utilize the URI and API Token cached in the current session.
 If no URI or API Token is cached, an attempt will be mode to retrieve any settings that have been saved to disk.
@@ -62,7 +62,7 @@ User: john.smith@acme.com
 Password for user john.smith@acme.com: **************
 ```
 
-### Persisted
+### Persisted Configuration
 
 Save to disk the base URI for your management console and your API Token.
 ```PowerShell
