@@ -68,12 +68,12 @@ function Invoke-S1Query {
         $InitializationLog = $MyInvocation.MyCommand.Name
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Verbose
-    }
 
-    # Attempt to retrieve cached configuration
-    if ((-not $Script:PSSentinelOne.ApiToken -and -not $Script:PSSentinelOne.TemporaryToken) -or -not $Script:PSSentinelOne.ManagementURL) {
-        Write-Log -Message "PS-SentinelOne Module Configuration not cached. Loading information from disk." -Level Verbose
-        Get-S1ModuleConfiguration -Persisted -Cache
+        # Attempt to retrieve cached configuration
+        if ((-not $Script:PSSentinelOne.ApiToken -and -not $Script:PSSentinelOne.TemporaryToken) -or -not $Script:PSSentinelOne.ManagementURL) {
+            Write-Log -Message "PS-SentinelOne Module Configuration not cached. Loading information from disk." -Level Verbose
+            Get-S1ModuleConfiguration -Persisted -Cache
+        }
     }
 
     # If no management URL is known, notify the user and exit
