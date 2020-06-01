@@ -102,10 +102,6 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
 
 ----------
 ## Capability
-To retrieve a full list of available commands
-```PowerShell
-PS > Get-Command -Module PS-SentinelOne
-```
 
 * Accounts
   * [Get-S1Account](#get-s1account)
@@ -115,14 +111,25 @@ PS > Get-Command -Module PS-SentinelOne
   * [Get-S1Group](#get-s1group)
   * [New-S1Group](#new-s1group)
   * [Remove-S1Group](#remove-s1group)
+* Agents
+  * [Get-S1Agent](#get-s1agent)
 
 ### Get-S1Account
 Retrieve available accounts list
+```PowerShell
+PS > Get-S1Account
+```
 
 ### Get-S1Site
 Retrieve your Sites list
 ```PowerShell
 PS > Get-S1Site
+```
+
+Retrieve sites for an account named "My Account"
+```PowerShell
+PS > $Account = Get-S1Account -Name "My Account"
+PS > Get-S1Site -AccountID $Account.id
 ```
 
 Retrieve only Active sites
@@ -165,4 +172,25 @@ PS > Remove-S1Group -GroupID $Group.id
 success
 -------
    True
+```
+
+### Get-S1Agent
+```PowerShell
+PS > $Group = Get-S1Group -Name "Default Group"
+PS > Get-S1Agent -GroupID $Group.id
+```
+
+### Start-S1Scan
+Initiate a scan for all agents with aborted scans
+```PowerShell
+PS > $Aborted = Get-S1Agent -ScanStatus aborted
+PS > Start-S1Scan -AgentID $Aborted.id
+Scan initiated for X agents
+```
+### Stop-S1Scan
+Abort scans for all agents with running scans
+```PowerShell
+PS > $Started = Get-S1Agent -ScanStatus started
+PS > Stop-S1Scan -AgentID $Started.id
+Scan aborted for X agents
 ```

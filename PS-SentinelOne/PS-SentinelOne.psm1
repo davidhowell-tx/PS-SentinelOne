@@ -25,6 +25,8 @@ Export-ModuleMember -Function Get-S1ActivityType
 Export-ModuleMember -Function Invoke-S1FetchFile
 Export-ModuleMember -Function Invoke-S1AgentAction
 Export-ModuleMember -Function Move-S1Agent
+Export-ModuleMember -Function Start-S1Scan
+Export-ModuleMember -Function Stop-S1Scan
 
 # Agents
 Export-ModuleMember -Function Get-S1Agent
