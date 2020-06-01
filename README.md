@@ -102,8 +102,24 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
 
 ----------
 ## Capability
+To retrieve a full list of available commands
+```PowerShell
+PS > Get-Command -Module PS-SentinelOne
+```
 
-### Sites
+* Accounts
+  * [Get-S1Account](#get-s1account)
+* Sites
+  * [Get-S1Site](#get-s1site)
+* Groups
+  * [Get-S1Group](#get-s1group)
+  * [New-S1Group](#new-s1group)
+  * [Remove-S1Group](#remove-s1group)
+
+### Get-S1Account
+Retrieve available accounts list
+
+### Get-S1Site
 Retrieve your Sites list
 ```PowerShell
 PS > Get-S1Site
@@ -117,4 +133,36 @@ PS > Get-S1Site -State active # Tab complete capability
 Get a Site by its Name
 ```PowerShell
 PS > Get-S1Site -Name "My Site"
+```
+
+### Get-S1Group
+Retrieve groups in the site "My Site"
+```PowerShell
+PS > $Site = Get-S1Site -Name "My Site"
+PS > $Groups = Get-S1Group -SiteID $Site.id
+```
+
+Retrieve the "Default Group" group in the site "My Site"
+```PowerShell
+PS > $Site = Get-S1Site -Name "My Site"
+PS > $Group = Get-S1Group -SiteID $Site.id -Name "Default Group"
+```
+
+### New-S1Group
+Create a new group called "Test" in the site "My Site"
+```PowerShell
+PS > $Site = Get-S1Site -Name "My Site"
+PS > $NewGroup = New-S1Group -Name "Test" -SiteID $Site.id
+```
+
+### Remove-S1Group
+Remove a group called "Test" in the site "My Site"
+```PowerShell
+PS > $Site = Get-S1Site -Name "My Site"
+PS > $Group = New-S1Group -Name "Test" -SiteID $Site.id
+PS > Remove-S1Group -GroupID $Group.id
+
+success
+-------
+   True
 ```
