@@ -45,7 +45,7 @@ function Get-S1Group {
         $AccountID,
 
         [Parameter(Mandatory=$False)]
-        [ValidateSet("Static","Dynamic")]
+        [ValidateSet("static","dynamic")]
         [String]
         $Type,
 
@@ -59,13 +59,14 @@ function Get-S1Group {
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Informational
 
-        $URI = "/web/api/v2.0/groups"
+        $URI = "/web/api/v2.1/groups"
         $Parameters = @{}
+        $Parameters.Add("limit", 200)
         if ($Name) { $Parameters.Add("name", $Name) }
         if ($GroupID) { $Parameters.Add("groupIds", ($GroupID -join ",") ) }
         if ($SiteID) { $Parameters.Add("siteIds", ($SiteID -join ",") ) }
         if ($AccountID) { $Parameters.Add("accountIds", ($AccountID -join ",") ) }
-        if ($Type) { $Parameters.Add("type", $Type) }
+        if ($Type) { $Parameters.Add("type", $Type.ToLower()) }
         if ($RegistrationToken) { $Parameters.Add("registrationToken", $RegistrationToken) }
         $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
         Write-Output $Response.data

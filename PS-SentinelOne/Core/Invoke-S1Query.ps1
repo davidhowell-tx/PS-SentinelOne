@@ -144,7 +144,6 @@ function Invoke-S1Query {
         $Response = Invoke-RestMethod @Request
     } Catch {
         Write-Log -Message $RestError.InnerException.Message -Level Warning
-        Write-Log -Message ($_.ErrorDetails.Message | ConvertFrom-Json | Select-Object -ExpandProperty errors) -Level Error
         return
     }
     Write-Output $Response

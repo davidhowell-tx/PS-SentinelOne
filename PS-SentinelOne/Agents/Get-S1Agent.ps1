@@ -141,7 +141,7 @@ function Get-S1Agent {
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Informational
         
-        $URI = "/web/api/v2.0/agents"
+        $URI = "/web/api/v2.1/agents"
         $Parameters = @{}
         if ($Name) { $Parameters.Add("computerName__contains",$Name) }
         if ($ScanStatus) { $Parameters.Add("scanStatuses", ($ScanStatus -join ",") ) }

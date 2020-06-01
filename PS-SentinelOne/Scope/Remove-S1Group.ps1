@@ -18,7 +18,7 @@ function Remove-S1Group {
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Informational
         
-        $URI = "/web/api/v2.0/groups/$GroupID"
+        $URI = "/web/api/v2.1/groups/$GroupID"
         $Response = Invoke-S1Query -URI $URI -Method Delete
         Write-Output $Response.data
     }

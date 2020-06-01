@@ -30,7 +30,7 @@ function Get-S1Account {
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Informational
 
-        $URI = "/web/api/v2.0/accounts"
+        $URI = "/web/api/v2.1/accounts"
         $Parameters = @{}
         switch ($PSCmdlet.ParameterSetName) {
             "Name" { $Parameters.Add("name", $Name) }

@@ -33,7 +33,7 @@ function New-S1Group {
             }
         }
         
-        $URI = "/web/api/v2.0/groups"
+        $URI = "/web/api/v2.1/groups"
         $Response = Invoke-S1Query -URI $URI -Method POST -Body ($Body | ConvertTo-Json) -ContentType "application/json"
         Write-Output $Response.data
     }
