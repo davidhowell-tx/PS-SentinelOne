@@ -22,11 +22,13 @@ Export-ModuleMember -Function Get-S1Activity
 Export-ModuleMember -Function Get-S1ActivityType
 
 # Agent Actions
-Export-ModuleMember -Function Invoke-S1FetchFile
 Export-ModuleMember -Function Invoke-S1AgentAction
 Export-ModuleMember -Function Move-S1Agent
 Export-ModuleMember -Function Start-S1Scan
 Export-ModuleMember -Function Stop-S1Scan
+Export-ModuleMember -Function Start-S1FetchLogs
+Export-ModuleMember -Function Start-S1FetchFile
+Export-ModuleMember -Function Send-S1Message
 
 # Agents
 Export-ModuleMember -Function Get-S1Agent

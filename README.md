@@ -113,6 +113,12 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
   * [Remove-S1Group](#remove-s1group)
 * Agents
   * [Get-S1Agent](#get-s1agent)
+* Agent Actions
+  * [Start-S1Scan](#start-s1scan)
+  * [Stop-S1Scan](#stop-s1scan)
+  * [Start-S1FetchFile](#start-s1fetchfile)
+  * [Start-S1FetchLogs](#start-s1fetchlogs)
+  * [Send-S1Message](#send-s1message)
 
 ### Get-S1Account
 Retrieve available accounts list
@@ -193,4 +199,25 @@ Abort scans for all agents with running scans
 PS > $Started = Get-S1Agent -ScanStatus started
 PS > Stop-S1Scan -AgentID $Started.id
 Scan aborted for X agents
+```
+
+### Start-S1FetchFile
+Initiate a fetch file command
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+```
+
+### Start-S1FetchLogs
+Fetch logs from a SentinelOne agent named "Deathstar"
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Start-S1FetchLogs -AgentID $Agent.id
+Fetch Logs initiated for 1 agents
+```
+
+### Send-S1Message
+Send a command to a SentinelOne agent named "Deathstar"
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Send-S1Message -AgentID $Agent.id -Message "Do I execute order 66?"
 ```
