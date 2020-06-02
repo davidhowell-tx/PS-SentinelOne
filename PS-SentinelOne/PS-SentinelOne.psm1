@@ -31,6 +31,7 @@ Export-ModuleMember -Function Start-S1FetchFile
 Export-ModuleMember -Function Send-S1Message
 Export-ModuleMember -Function Start-S1NetworkQuarantine
 Export-ModuleMember -Function Stop-S1NetworkQuarantine
+Export-ModuleMember -Function Start-S1Reload
 
 # Agents
 Export-ModuleMember -Function Get-S1Agent

@@ -236,3 +236,13 @@ Stop network quarantine for a SentinelOne agent named "Deathstar"
 PS > $Agent = Get-S1Agent -Name "Deathstar"
 PS > Stop-S1NetworkQuarantine -AgentID $Agent.id
 ```
+
+### Start-S1Reload
+Reload the SentinelOne agent services for an agent named "Deathstar"
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Start-S1Reload -AgentID $Agent.id -Module "log"
+PS > Start-S1Reload -AgentID $Agent.id -Module "static"
+PS > Start-S1Reload -AgentID $Agent.id -Module "agent"
+PS > Start-S1Reload -AgentID $Agent.id -Module "monitor"
+```
