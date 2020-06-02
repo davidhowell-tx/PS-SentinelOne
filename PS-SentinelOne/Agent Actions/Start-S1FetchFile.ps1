@@ -1,4 +1,4 @@
-function Invoke-S1FetchFile {
+function Start-S1FetchFile {
     <#
     .SYNOPSIS
         Sends a request to the agent to fetch files
@@ -37,7 +37,7 @@ function Invoke-S1FetchFile {
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Informational
         
-        $URI = "/web/api/v2.0/agents/$AgentID/actions/fetch-files"
+        $URI = "/web/api/v2.1/agents/$AgentID/actions/fetch-files"
         $Method = "Post"
 
         $Body = @{
