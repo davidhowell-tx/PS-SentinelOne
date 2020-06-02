@@ -222,3 +222,17 @@ Send a command to a SentinelOne agent named "Deathstar"
 PS > $Agent = Get-S1Agent -Name "Deathstar"
 PS > Send-S1Message -AgentID $Agent.id -Message "Do I execute order 66?"
 ```
+
+### Start-S1NetworkQuarantine
+Start network quarantine for a SentinelOne agent named "Deathstar"
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Start-S1NetworkQuarantine -AgentID $Agent.id
+```
+
+### Stop-S1NetworkQuarantine
+Stop network quarantine for a SentinelOne agent named "Deathstar"
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Stop-S1NetworkQuarantine -AgentID $Agent.id
+```
