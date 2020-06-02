@@ -205,6 +205,7 @@ Scan aborted for X agents
 Initiate a fetch file command
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Start-S1FetchFile -AgentID $Agent.id -FilePath "/path/to/file" -Password ExecuteOrder66!
 ```
 
 ### Start-S1FetchLogs
