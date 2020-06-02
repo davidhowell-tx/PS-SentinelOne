@@ -16,7 +16,7 @@ function Get-S1Passphrase {
         Write-Log -Message $InitializationLog -Level Informational
         
         $Method = "Get"
-        $URI = "/web/api/v2.0/agents/passphrases"
+        $URI = "/web/api/v2.1/agents/passphrases"
         $Parameters = @{}
         if ($Name) { $Parameters.Add("computerName__like",$AgentName) }
         if ($AgentID) { $Parameters.Add("ids", ($AgentID -join ",") ) }
