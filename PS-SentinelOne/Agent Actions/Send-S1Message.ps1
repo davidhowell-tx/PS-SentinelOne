@@ -4,7 +4,7 @@ function Send-S1Message {
         Sends a message to SentinelOne agents
     
     .PARAMETER AgentID
-        Agent ID for the agent you want to scan
+        Agent ID for the agent you want to send a message to
     
     .PARAMETER Message
         The message to send
