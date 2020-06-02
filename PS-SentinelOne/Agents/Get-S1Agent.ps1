@@ -8,44 +8,6 @@ function Get-S1Agent {
     
     .PARAMETER AgentID
         Filter applications by agent ID
-
-    .NOTES Options Implemented
-        siteIds, filteredGroupIds, accountIds,
-        machineTypes, mitigationMode, osTypes
-        infected,
-        isPendingUninstall, isDecommissioned, isUninstalled
-    .NOTES Options not yet implemented 
-        computerName__like, computerName__contains, 
-        adComputerName__contains, 
-        adQuery, adQuery__contains,
-        adUserQuery__contains,
-        adUserName__contains,
-        adComputerMember__contains, 
-        adUserMember__contains
-        domains,
-        agentVersions, 
-        isUpToDate,
-        migrationStatus, 
-        activeThreats, 
-        osArch,  
-        cpuCount__lte, cpuCount__lt, cpuCount__between,
-        coreCount__gt, coreCount__lt,
-        totalMemory__gte, totalMemory__lte, totalMemory__between 
-        mitigationModeSuspicious, isActive, encryptedApplications (disk encrypted), 
-        consoleMigrationStatuses, userActionsNeeded,  
-        lastLoggedInUserName__contains, 
-        threatContentHash, threatCreatedAt__lt, threatCreatedAt__gt, threatHidden, activeThreats__gt 
-        externalIp__contains
-        networkInterfaceInet__contains, networkInterfacePhysical__contains (mac), 
-        uuid, uuids, 
-        createdAt__gt, 
-        lastActiveDate__lt, lastActiveDate__gt, lastActiveDate__between, lastActiveDate__lte, lastActiveDate__gte, 
-        registeredAt__between, registeredAt__gt, registeredAt__lt
-        updatedAt__between, updatedAt__lt, updatedAt__lte, updatedAt__gte, 
-        ranger statuses, rangerStatus, rangerVersions, 
-        sortOrder, 
-        appVulnerabilityStatuses
-        externalId__contains
     #>
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
