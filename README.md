@@ -123,6 +123,7 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
   * [Retrieve infected agents](#retrieve-infected-agents)
   * [Retrieve agents with resolved threats](#retrieve-agents-with-resolved-threats)
 * Agent Actions
+  * [Get Available Actions](#get-available-actions)
   * [Initiate a scan](#initiate-a-scan)
   * [Abort a scan](#abort-a-scan)
 
@@ -205,6 +206,56 @@ PS > Get-S1Agent -MitigationMode detect
 ### Retrieve infected agents
 ```PowerShell
 PS > Get-S1Agent -Infected true
+```
+### Get Available Actions
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Get-S1AvailableActions -AgentID $Agent.id
+
+isDisabled name                     Example
+---------- ----                     -------
+     False fetchLogs                Invoke-S1AgentAction -AgentID <agent_id> -FetchLogs
+     False initiateScan             Invoke-S1AgentAction -AgentID <agent_id> -Scan
+     False abortScan                Invoke-S1AgentAction -AgentID <agent_id> -AbortScan
+     False disconnectFromNetwork    Invoke-S1AgentAction -AgentID <agent_id> -DisconnectFromNetwork
+     False reconnectToNetwork       Invoke-S1AgentAction -AgentID <agent_id> -ReconnectToNetwork
+     False updateSoftware
+     False sendMessage              Invoke-S1AgentAction -AgentID <agent_id> -SendMessage <message>
+     False shutDown
+     False decommission             Invoke-S1AgentAction -AgentID <agent_id> -Decommission
+     False reboot
+     False reloadConf               Invoke-S1AgentAction -AgentID <agent_id> -Reload <log, static, agent, monitor>
+     False uninstall
+     False approveUninstall         Invoke-S1AgentAction -AgentID <agent_id> -ApproveUninstall
+     False rejectUninstall          Invoke-S1AgentAction -AgentID <agent_id> -RejectUninstall
+     False moveToAnotherSite        Invoke-S1AgentAction -AgentID <agent_id> -MoveToSite -TargetSiteID <site.id>
+     False configureFirewallLogging
+     False remoteShell
+     False clearRemoteShellSession
+     False purgeResearchData
+     False purgeCrashDumps
+     False flushEventsQueue
+     False resetLocalConfiguration  Invoke-S1AgentAction -AgentID <agent_id> -ResetLocalConfig
+      True restartServices
+     False markAsUpToDate
+     False protect                  Invoke-S1AgentAction -AgentID <agent_id> -Protect
+     False unprotect                Invoke-S1AgentAction -AgentID <agent_id> -Unprotect
+     False revokeToken
+     False purgeDB
+     False controlCrashDumps
+     False controlResearchData
+     False eventsThrottling
+     False configuration
+     False migrateAgent
+     False randomizeUUID
+     False fileFetch
+     False showApplications
+     False showPassphrase
+     False searchOnDeepVisibility
+     False viewThreats
+     False setCustomerIdentifier
+      True enableRanger
+      True disableRanger
 ```
 
 ### Initiate a scan
