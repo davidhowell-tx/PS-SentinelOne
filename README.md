@@ -103,73 +103,74 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
 ----------
 ## Capability
 
+**Examples**
 * Accounts
-  * [Get-S1Account](#get-s1account)
+  * [Retrieve accounts list](#retrieve-accounts-list)
 * Sites
-  * [Get-S1Site](#get-s1site)
+  * [Retrieve sites list](#retrieve-sites-list)
+  * [Retrieve sites for account](#retrieve-sites-for-account)
+  * [Retrieve active sites](#retrieve-active-sites)
+  * [Retrieve a site by name](#retrieve-a-site-by-name)
 * Groups
-  * [Get-S1Group](#get-s1group)
-  * [New-S1Group](#new-s1group)
-  * [Remove-S1Group](#remove-s1group)
+  * [Retrieve all groups in a specific site](#retrieve-all-groups-in-a-specific-site)
+  * [Retrieve a specific group in a specific site](#retrieve-a-specific-group-in-a-specific-site)
+  * [Create a new group](#create-a-new-group)
+  * [Delete a group](#delete-a-group)
 * Agents
-  * [Get-S1Agent](#get-s1agent)
+  * [Retrieve agents in a group](#retrieve-agents-in-a-group)
+  * [Retrieve agents with macOS](#retrieve-agents-with-macOS)
+  * [Retrieve agents in detect mode](#retrieve-agents-in-detect-mode)
+  * [Retrieve infected agents](#retrieve-infected-agents)
+  * [Retrieve agents with resolved threats](#retrieve-agents-with-resolved-threats)
 * Agent Actions
-  * [Start-S1Scan](#start-s1scan)
-  * [Stop-S1Scan](#stop-s1scan)
-  * [Start-S1FetchFile](#start-s1fetchfile)
-  * [Start-S1FetchLogs](#start-s1fetchlogs)
-  * [Send-S1Message](#send-s1message)
+  * [Initiate a scan](#initiate-a-scan)
+  * [Abort a scan](#abort-a-scan)
 
-### Get-S1Account
-Retrieve available accounts list
+### Retrieve accounts list
 ```PowerShell
 PS > Get-S1Account
 ```
 
-### Get-S1Site
-Retrieve your Sites list
+### Retrieve sites list
 ```PowerShell
 PS > Get-S1Site
 ```
 
-Retrieve sites for an account named "My Account"
+### Retrieve sites for account
 ```PowerShell
 PS > $Account = Get-S1Account -Name "My Account"
 PS > Get-S1Site -AccountID $Account.id
 ```
 
-Retrieve only Active sites
+### Retrieve active sites
 ```PowerShell
 PS > Get-S1Site -State active # Tab complete capability
 ```
 
-Get a Site by its Name
+### Retrieve a site by name
 ```PowerShell
 PS > Get-S1Site -Name "My Site"
 ```
 
-### Get-S1Group
-Retrieve groups in the site "My Site"
+### Retrieve all groups in a specific site
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
 PS > $Groups = Get-S1Group -SiteID $Site.id
 ```
 
-Retrieve the "Default Group" group in the site "My Site"
+### Retrieve a specific group in a specific site
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
-PS > $Group = Get-S1Group -SiteID $Site.id -Name "Default Group"
+PS > $Groups = Get-S1Group -SiteID $Site.id -Name "Default Group"
 ```
 
-### New-S1Group
-Create a new group called "Test" in the site "My Site"
+### Create a new group
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
 PS > $NewGroup = New-S1Group -Name "Test" -SiteID $Site.id
 ```
 
-### Remove-S1Group
-Remove a group called "Test" in the site "My Site"
+### Delete a group
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
 PS > $Group = New-S1Group -Name "Test" -SiteID $Site.id
@@ -180,24 +181,43 @@ success
    True
 ```
 
-### Get-S1Agent
+### Retrieve agents in a group
 ```PowerShell
 PS > $Group = Get-S1Group -Name "Default Group"
 PS > Get-S1Agent -GroupID $Group.id
 ```
 
-### Start-S1Scan
-Initiate a scan for all agents with aborted scans
+### Retrieve agents for a certain domain
+```PowerShell
+PS > Get-S1Agent -Domain acme
+```
+
+### Retrieve agents with macOS
+```PowerShell
+PS > Get-S1Agent -OSType macos
+```
+
+### Retrieve agents in detect mode
+```PowerShell
+PS > Get-S1Agent -MitigationMode detect
+```
+
+### Retrieve infected agents
+```PowerShell
+PS > Get-S1Agent -Infected true
+```
+
+### Initiate a scan
 ```PowerShell
 PS > $Aborted = Get-S1Agent -ScanStatus aborted
-PS > Start-S1Scan -AgentID $Aborted.id
+PS > Invoke-S1AgentAction -AgentID $Aborted.id -Scan
 Scan initiated for X agents
 ```
-### Stop-S1Scan
-Abort scans for all agents with running scans
+
+### Abort a scan
 ```PowerShell
 PS > $Started = Get-S1Agent -ScanStatus started
-PS > Stop-S1Scan -AgentID $Started.id
+PS > Invoke-S1AgentAction -AgentID $Started.id -AbortScan
 Scan aborted for X agents
 ```
 

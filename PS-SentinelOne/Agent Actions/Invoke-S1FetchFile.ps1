@@ -1,4 +1,4 @@
-function Start-S1FetchFile {
+function Invoke-S1FetchFile {
     <#
     .SYNOPSIS
         Sends a request to the agent to fetch files

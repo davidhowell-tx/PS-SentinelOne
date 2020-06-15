@@ -24,15 +24,8 @@ Export-ModuleMember -Function Get-S1ActivityType
 # Agent Actions
 Export-ModuleMember -Function Invoke-S1AgentAction
 Export-ModuleMember -Function Move-S1Agent
-Export-ModuleMember -Function Start-S1Scan
-Export-ModuleMember -Function Stop-S1Scan
-Export-ModuleMember -Function Start-S1FetchLogs
-Export-ModuleMember -Function Start-S1FetchFile
-Export-ModuleMember -Function Send-S1Message
-Export-ModuleMember -Function Start-S1NetworkQuarantine
-Export-ModuleMember -Function Stop-S1NetworkQuarantine
-Export-ModuleMember -Function Start-S1Reload
-Export-ModuleMember -Function Get-S1AgentAvailableActions
+Export-ModuleMember -Function Invoke-S1FetchFile
+Export-ModuleMember -Function Get-S1AvailableActions
 
 # Agents
 Export-ModuleMember -Function Get-S1Agent

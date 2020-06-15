@@ -37,12 +37,12 @@ function Move-S1Agent {
     if ($GroupID) { $Body.filter.Add("groupIds", ($GroupID -join ","))}
     
     if ($PSCmdlet.ParameterSetName -eq "MoveToGroup") {
-        $URI = "/web/api/v2.0/groups/$TargetGroupID/move-agents"
+        $URI = "/web/api/v2.1/groups/$TargetGroupID/move-agents"
         $Method = "Put"
         if ($AgentID) { $Body.filter.Add("agentIds", ($AgentID -join ","))}
     }
     if ($PSCmdlet.ParameterSetName -eq "MoveToSite") {
-        $URI = "/web/api/v2.0/agents/actions/move-to-site"
+        $URI = "/web/api/v2.1/agents/actions/move-to-site"
         $Method = "Post"
         $Body.Add("data", @{"targetSiteId" = $TargetSiteID})
         if ($AgentID) { $Body.filter.Add("ids", ($AgentID -join ","))}

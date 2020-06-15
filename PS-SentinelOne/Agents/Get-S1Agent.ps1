@@ -40,10 +40,10 @@ function Get-S1Agent {
         [String]
         $Infected,
 
-        [Parameter(Mandatory=$False)]
-        [ValidateSet("true", "false")]
-        [String]
-        $ThreatResolved,
+        # [Parameter(Mandatory=$False)]
+        # [ValidateSet("true", "false")]
+        # [String]
+        # $ThreatResolved,
 
         [Parameter(Mandatory=$False)]
         [ValidateSet("patch_required", "up_to_date", "not_applicable")]
@@ -78,10 +78,6 @@ function Get-S1Agent {
         $LocalIP,
 
         [Parameter(Mandatory=$False)]
-        [String]
-        $AgentUUID,
-
-        [Parameter(Mandatory=$False)]
         [String[]]
         $AgentID,
 
@@ -111,15 +107,14 @@ function Get-S1Agent {
         if ($OSType) { $Parameters.Add("osTypes", ($OSType -join ",") ) }
         if ($MitigationMode) { $Parameters.Add("mitigationMode", $MitigationMode) }
         if ($Infected) { $Parameters.Add("infected", $Infected ) }
-        if ($ThreatResolved) { $Parameters.Add("threatResolved", $ThreatResolved) }
+        # if ($ThreatResolved) { $Parameters.Add("threatResolved", $ThreatResolved) }
         if ($AppVulnerabilityStatus) { $Parameters.Add("appsVulnerabilityStatuses", ($AppVulnerabilityStatus -join ",") ) }
-        if ($IsPendingUninstall) { $Parameters.Add("isPendingUninstall", $PendingUninstall) }
+        if ($IsPendingUninstall) { $Parameters.Add("isPendingUninstall", $IsPendingUninstall) }
         if ($IsUninstalled) { $Parameters.Add("isUninstalled", $IsUninstalled) }
         if ($IsDecommissioned) { $Parameters.Add("isDecommissioned", $IsDecommissioned) }
         if ($ADQuery) { $Parameters.Add("adQuery__contains", ($ADQuery -join ",") ) }
         if ($Domain) { $Parameters.Add("domains", ($Domain -join ",") ) }
         if ($LocalIP) { $Parameters.Add("networkInterfaceInet__contains", ($LocalIP -join "," ) ) }
-        if ($AgentUUID) { $Parameters.Add("uuid", $AgentUUID) }
         if ($AgentID) { $Parameters.Add("ids", ($AgentID -join ",") ) }
         if ($GroupID) { $Parameters.Add("groupIds", ($GroupID -join ",") ) }
         if ($SiteID) { $Parameters.Add("siteIds", ($SiteID -join ",") ) }
