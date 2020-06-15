@@ -25,32 +25,32 @@ function Get-S1AvailableActions {
 
     ForEach ($Entry in $Response.data) {
         switch ($Entry.name) {
-            "fetchLogs" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -FetchLogs" }
-            "initiateScan" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -Scan" }
-            "abortScan" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -AbortScan" }
-            "disconnectFromNetwork" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -DisconnectFromNetwork" }
-            "reconnectToNetwork" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -ReconnectToNetwork" }
+            "fetchLogs" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -FetchLogs" }
+            "initiateScan" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -Scan" }
+            "abortScan" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -AbortScan" }
+            "disconnectFromNetwork" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -DisconnectFromNetwork" }
+            "reconnectToNetwork" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -ReconnectToNetwork" }
             # "updateSoftware" 
-            "sendMessage" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -SendMessage <message>" }
+            "sendMessage" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -SendMessage <message>" }
             # "shutDown" 
-            "decommission" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -Decommission" }
+            "decommission" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -Decommission" }
             # "reboot"
-            "reloadConf" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -Reload <log, static, agent, monitor>" }
+            "reloadConf" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -Reload <log, static, agent, monitor>" }
             # "uninstall"
-            "approveUninstall" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -ApproveUninstall" }
-            "rejectUninstall" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -RejectUninstall" }
-            "moveToAnotherSite" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -MoveToSite -TargetSiteID <site.id>" }
+            "approveUninstall" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -ApproveUninstall" }
+            "rejectUninstall" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -RejectUninstall" }
+            "moveToAnotherSite" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -MoveToSite -TargetSiteID <site.id>" }
             # "configureFirewallLogging"
             # "remoteShell"
             # "clearRemoteShellSession"
             # "purgeResearchData"
             # "purgeCrashDumps"
             # "flushEventsQueue"
-            "resetLocalConfiguration" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -ResetLocalConfig" }
+            "resetLocalConfiguration" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -ResetLocalConfig" }
             # "restartServices"
             # "markAsUpToDate"
-            "protect" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -Protect" }
-            "unprotect" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID <agent_id> -Unprotect" }
+            "protect" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -Protect" }
+            "unprotect" { Add-Member -InputObject $Entry -MemberType NoteProperty -Name Example -Value "Invoke-S1AgentAction -AgentID $AgentID -Unprotect" }
             # "revokeToken"
             # purgeDB
             # controlCrashDumps
