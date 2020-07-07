@@ -32,6 +32,10 @@ Export-ModuleMember -Function Get-S1Agent
 Export-ModuleMember -Function Get-S1Application
 Export-ModuleMember -Function Get-S1Threat
 
+# Deep Visibility
+Export-ModuleMember -Function New-S1DVQuery
+Export-ModuleMember -Function Get-S1DVQueryStatus
+
 # Exclusions
 Export-ModuleMember -Function Get-S1Exclusion
 
@@ -46,3 +50,5 @@ Export-ModuleMember -Function Get-S1Group
 Export-ModuleMember -Function New-S1Group
 Export-ModuleMember -Function Remove-S1Group
 
+# Dev Mode
+Export-ModuleMember -Function Invoke-S1Query
