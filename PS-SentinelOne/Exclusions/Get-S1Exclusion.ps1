@@ -3,9 +3,9 @@ function Get-S1Exclusion {
     .SYNOPSIS
         Retrieves information related to SentinelOne exclusions
     #>
-    [CmdletBinding(DefaultParameterSetName="All")]
+    [CmdletBinding()]
     Param(
-        [Parameter(Mandatory=$False)]
+        [Parameter(Mandatory=$True)]
         [ValidateSet(
             "path",
             "certificate",
@@ -77,7 +77,7 @@ function Get-S1Exclusion {
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Informational
         
-        $URI = "/web/api/v2.1/restrictions"
+        $URI = "/web/api/v2.1/exclusions"
         $Parameters = @{}
         
         if ($Type) { $Parameters.Add("type", $Type) }
