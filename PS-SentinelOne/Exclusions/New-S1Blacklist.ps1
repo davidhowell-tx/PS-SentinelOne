@@ -15,7 +15,7 @@ function New-S1Blacklist {
 
         [Parameter(Mandatory=$True)]
         [ValidateSet("windows", "macos", "linux")]
-        [String[]]
+        [String]
         $OSType,
 
         [Parameter(Mandatory=$True,ParameterSetName="GroupLevel")]
@@ -39,16 +39,16 @@ function New-S1Blacklist {
         $Body = @{
             data = @{
                 type = "black_hash"
-                ostype = $OSType
+                osType = $OSType
                 value = $Hash
                 description = $Description
             }
             filter = @{}
         }
 
-        if ($GroupID) { $Body.filter.Add("groupIds", $GroupID) }
-        if ($SiteID) { $Body.filter.Add("siteIds", $SiteID) }
-        if ($AccountID) { $Body.filter.Add("accountIds", $AccountID) }
+        if ($GroupID) { $Body.filter.Add("groupIds", @($GroupID -join ",")) }
+        if ($SiteID) { $Body.filter.Add("siteIds", @($SiteID -join ",")) }
+        if ($AccountID) { $Body.filter.Add("accountIds", @($AccountID -join ",")) }
         
         $URI = "/web/api/v2.1/restrictions"
         $Response = Invoke-S1Query -URI $URI -Method POST -Body ($Body | ConvertTo-Json) -ContentType "application/json"
