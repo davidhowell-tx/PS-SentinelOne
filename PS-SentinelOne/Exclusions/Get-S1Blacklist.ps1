@@ -15,19 +15,6 @@ function Get-S1Blacklist {
         $IncludeInherited,
 
         [Parameter(Mandatory=$False)]
-        [ValidateSet(
-            "suppress",
-            "suppress_dynamic_only",
-            "suppress_dfi_only",
-            "disable_in_process_monitor",
-            "disable_in_process_monitor_deep",
-            "disable_all_monitors",
-            "disable_all_monitors_deep"
-        )]
-        [String[]]
-        $Mode,
-
-        [Parameter(Mandatory=$False)]
         [ValidateSet("windows", "windows_legacy", "macos", "linux")]
         [String[]]
         $OSType,
@@ -64,7 +51,6 @@ function Get-S1Blacklist {
         $Parameters.Add("type", "black_hash" )
 
         if ($Hash) { $Parameters.Add("value", $Hash) }
-        if ($Mode) { $Parameters.Add("modes", ($Mode -join ",") ) }
         if ($IncludeInherited) { $Parameters.Add("unified", $IncludeInherited) }
         if ($OSType) { $Parameters.Add("osTypes", ($OSType -join ",") ) }
         if ($BlacklistID) { $Parameters.Add("ids", ($BlacklistID -join ",") ) }
