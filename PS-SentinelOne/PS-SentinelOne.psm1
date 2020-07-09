@@ -38,6 +38,8 @@ Export-ModuleMember -Function Get-S1DVQueryStatus
 
 # Exclusions
 Export-ModuleMember -Function Get-S1Exclusion
+Export-ModuleMember -Function New-S1Exclusion
+Export-ModuleMember -Function Remove-S1Exclusion
 Export-ModuleMember -Function Get-S1Blacklist
 Export-ModuleMember -Function New-S1Blacklist 
 Export-ModuleMember -Function Remove-S1Blacklist
