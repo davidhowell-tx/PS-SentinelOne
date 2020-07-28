@@ -87,10 +87,10 @@ PS > Get-S1ModuleConfiguration
 Name                           Value
 ----                           -----
 ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\config.json
-PS >
+
 PS > Get-S1Site
 <OUTPUT REMOVED>
-PS >
+
 PS > Get-S1ModuleConfiguration
 
 Name                           Value
