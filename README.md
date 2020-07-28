@@ -87,10 +87,10 @@ PS > Get-S1ModuleConfiguration
 Name                           Value
 ----                           -----
 ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\config.json
+PS >
 PS > Get-S1Site
-
 <OUTPUT REMOVED>
-
+PS >
 PS > Get-S1ModuleConfiguration
 
 Name                           Value
@@ -135,6 +135,28 @@ PS > Get-S1Account
 ### Retrieve sites list
 ```PowerShell
 PS > Get-S1Site
+
+accountId           : 42
+accountName         : ACME Corp
+activeLicenses      : 42
+createdAt           : 1970-01-01T00:00:00.000000Z
+creator             : John Smith
+creatorId           : 42
+expiration          : 1970-01-01T00:00:00.000000Z
+externalId          :
+healthStatus        : 
+id                  : 42
+isDefault           : True
+name                : Acme Primary Site
+registrationToken   : aeyJ1cmwiOiAiaHR0cHM6Ly9tYW5hZ2VtZW50LXRlbmFudC5zZW50aW5lbG9uZS5uZXQiLCAic2l0ZV9rZXkiOiAiNDIifQ==
+siteType            : 
+sku                 : 
+state               : active
+suite               : 
+totalLicenses       : 42
+unlimitedExpiration : True
+unlimitedLicenses   : False
+updatedAt           : 1970-01-01T00:00:00.000000Z
 ```
 
 ### Retrieve sites for account
