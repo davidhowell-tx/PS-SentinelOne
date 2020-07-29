@@ -141,10 +141,14 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
   * [Start network quarantine for an agent](#start-network-quarantine-for-an-agent)
   * [Stop network quarantine for an agent](#stop-network-quarantine-for-an-agent)
 
+### Accounts
+
 #### Retrieve accounts list
 ```PowerShell
 PS > Get-S1Account
 ```
+
+### Sites
 
 #### Retrieve sites list
 ```PowerShell
@@ -166,6 +170,8 @@ PS > Get-S1Site -State active # Tab complete capability
 ```PowerShell
 PS > Get-S1Site -Name "My Site"
 ```
+
+### Groups
 
 #### Retrieve all groups in a specific site
 ```PowerShell
@@ -195,6 +201,8 @@ success
 -------
    True
 ```
+
+### Agents
 
 #### Retrieve agents in a group
 ```PowerShell
@@ -228,6 +236,8 @@ PS > $Agent = Get-S1Agent -Name "Deathstar"
 PS > Get-S1Passphrase -AgentID $Agent.id
 ```
 
+### Exclusions (Whitelist)
+
 #### Retrieve hash exclusions for a site
 ```PowerShell
 PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
@@ -240,11 +250,15 @@ PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
 PS > Get-S1Exclusion -SiteID $TargetSite.id -Type path
 ```
 
+### Blacklist
+
 #### Retrieve blacklist for a site
 ```PowerShell
 PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
 PS > Get-S1Blacklist -SiteID $TargetSite.id
 ```
+
+### Applications
 
 #### Retrieve installed applications for a specific agent
 ```PowerShell
@@ -256,6 +270,8 @@ PS > Get-S1Application -AgentID $Agent.id
 ```PowerShell
 PS > $ChromeInstances = Get-S1Application -ApplicationName "Google Chrome"
 ```
+
+### Agent Actions
 
 #### Get Available Actions
 ```PowerShell
