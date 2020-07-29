@@ -258,6 +258,13 @@ PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
 PS > Get-S1Blacklist -SiteID $TargetSite.id
 ```
 
+#### Add a hash to the blacklist
+```PowerShell
+PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
+PS > New-S1Blacklist -Hash "2EF7BDE608CE5404E97D5F042F95F89F1C232871" -Description "Terrible" -OSType windows -SiteID $TargetSite.id
+```
+
+
 ### Applications
 
 #### Retrieve installed applications for a specific agent
