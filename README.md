@@ -102,8 +102,6 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
 
 ----------
 ## Capability
-
-**Examples**
 * Accounts
   * [Retrieve accounts list](#retrieve-accounts-list)
 * Sites
@@ -118,60 +116,76 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
   * [Delete a group](#delete-a-group)
 * Agents
   * [Retrieve agents in a group](#retrieve-agents-in-a-group)
-  * [Retrieve agents with macOS](#retrieve-agents-with-macOS)
+  * [Retrieve agents for a certain domain](#retrieve-agents-for-a-certain-domain)
+  * [Retrieve agents with macOS](#retrieve-agents-with-macos)
   * [Retrieve agents in detect mode](#retrieve-agents-in-detect-mode)
   * [Retrieve infected agents](#retrieve-infected-agents)
-  * [Retrieve agents with resolved threats](#retrieve-agents-with-resolved-threats)
+  * [Retrieve passphrase for an agent](#retrieve-passphrase-for-an-agent)
+* Exclusions (Whitelist)
+  * [Retrieve hash exclusions for a site](#retrieve-hash-exclusions-for-a-site)
+  * [Retrieve path exclusions for a site](#retrieve-path-exclusions-for-a-site)
+* Blacklist
+  * [Retrieve blacklist for a site](#retrieve-blacklist-for-a-site)
+* Applications
+  * [Retrieve installed applications for a specific agent](#retrieve-installed-applications-for-a-specific-agent)
+  * [Retrieve application instances and versions by application name](#retrieve-application-instances-and-versions-by-application-name)
 * Agent Actions
   * [Get Available Actions](#get-available-actions)
+  * [Move agent to different group](#move-agent-to-different-group)
+  * [Move agent to different site](#move-agent-to-different-site)
   * [Initiate a scan](#initiate-a-scan)
   * [Abort a scan](#abort-a-scan)
+  * [Fetch a file](#fetch-a-file)
+  * [Fetch logs from agent](#fetch-logs-from-agent)
+  * [Send a message to an agent](#send-a-message-to-an-agent)
+  * [Start network quarantine for an agent](#start-network-quarantine-for-an-agent)
+  * [Stop network quarantine for an agent](#stop-network-quarantine-for-an-agent)
 
-### Retrieve accounts list
+#### Retrieve accounts list
 ```PowerShell
 PS > Get-S1Account
 ```
 
-### Retrieve sites list
+#### Retrieve sites list
 ```PowerShell
 PS > Get-S1Site
 ```
 
-### Retrieve sites for account
+#### Retrieve sites for account
 ```PowerShell
 PS > $Account = Get-S1Account -Name "My Account"
 PS > Get-S1Site -AccountID $Account.id
 ```
 
-### Retrieve active sites
+#### Retrieve active sites
 ```PowerShell
 PS > Get-S1Site -State active # Tab complete capability
 ```
 
-### Retrieve a site by name
+#### Retrieve a site by name
 ```PowerShell
 PS > Get-S1Site -Name "My Site"
 ```
 
-### Retrieve all groups in a specific site
+#### Retrieve all groups in a specific site
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
 PS > $Groups = Get-S1Group -SiteID $Site.id
 ```
 
-### Retrieve a specific group in a specific site
+#### Retrieve a specific group in a specific site
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
 PS > $Groups = Get-S1Group -SiteID $Site.id -Name "Default Group"
 ```
 
-### Create a new group
+#### Create a new group
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
 PS > $NewGroup = New-S1Group -Name "Test" -SiteID $Site.id
 ```
 
-### Delete a group
+#### Delete a group
 ```PowerShell
 PS > $Site = Get-S1Site -Name "My Site"
 PS > $Group = New-S1Group -Name "Test" -SiteID $Site.id
@@ -182,32 +196,68 @@ success
    True
 ```
 
-### Retrieve agents in a group
+#### Retrieve agents in a group
 ```PowerShell
 PS > $Group = Get-S1Group -Name "Default Group"
 PS > Get-S1Agent -GroupID $Group.id
 ```
 
-### Retrieve agents for a certain domain
+#### Retrieve agents for a certain domain
 ```PowerShell
 PS > Get-S1Agent -Domain acme
 ```
 
-### Retrieve agents with macOS
+#### Retrieve agents with macOS
 ```PowerShell
 PS > Get-S1Agent -OSType macos
 ```
 
-### Retrieve agents in detect mode
+#### Retrieve agents in detect mode
 ```PowerShell
 PS > Get-S1Agent -MitigationMode detect
 ```
 
-### Retrieve infected agents
+#### Retrieve infected agents
 ```PowerShell
 PS > Get-S1Agent -Infected true
 ```
-### Get Available Actions
+
+#### Retrieve passphrase for an agent
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Get-S1Passphrase -AgentID $Agent.id
+```
+
+#### Retrieve hash exclusions for a site
+```PowerShell
+PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
+PS > Get-S1Exclusion -SiteID $TargetSite.id -Type white_hash
+```
+
+#### Retrieve path exclusions for a site
+```PowerShell
+PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
+PS > Get-S1Exclusion -SiteID $TargetSite.id -Type path
+```
+
+#### Retrieve blacklist for a site
+```PowerShell
+PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
+PS > Get-S1Blacklist -SiteID $TargetSite.id
+```
+
+#### Retrieve installed applications for a specific agent
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Get-S1Application -AgentID $Agent.id
+```
+
+#### Retrieve application instances and versions by application name
+```PowerShell
+PS > $ChromeInstances = Get-S1Application -ApplicationName "Google Chrome"
+```
+
+#### Get Available Actions
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
 PS > Get-S1AvailableActions -AgentID $Agent.id
@@ -258,62 +308,65 @@ isDisabled name                     Example
       True disableRanger
 ```
 
-### Initiate a scan
+#### Move agent to different group
 ```PowerShell
-PS > $Aborted = Get-S1Agent -ScanStatus aborted
-PS > Invoke-S1AgentAction -AgentID $Aborted.id -Scan
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > $TargetGroup = Get-S1Group -Name "Destroyed Battle Stations"
+PS > Move-S1Agent -AgentID $Agents.id -TargetGroupID $TargetGroup.id
+```
+
+#### Move agent to different site
+```PowerShell
+PS > $Agent = Get-S1Agent -Name "Kashyyyk"
+PS > $TargetSite = Get-S1Site -Name "Rebel Alliance"
+PS > Move-S1Agent -AgentID $Agents.id -TargetSiteID $TargetSite.id
+```
+
+#### Initiate a scan
+```PowerShell
+PS > $Agents = Get-S1Agent -ScanStatus aborted
+PS > Invoke-S1AgentAction -AgentID $Agents.id -Scan
 Scan initiated for X agents
 ```
 
-### Abort a scan
+#### Abort a scan
 ```PowerShell
 PS > $Started = Get-S1Agent -ScanStatus started
 PS > Invoke-S1AgentAction -AgentID $Started.id -AbortScan
 Scan aborted for X agents
 ```
 
-### Start-S1FetchFile
-Initiate a fetch file command
+#### Fetch a file
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
-PS > Start-S1FetchFile -AgentID $Agent.id -FilePath "/path/to/file" -Password ExecuteOrder66!
+PS > Invoke-S1FetchFile -AgentID $Agent.id -FilePath "/path/to/file" -Password ExecuteOrder66!
+
+success
+-------
+   True
 ```
 
-### Start-S1FetchLogs
-Fetch logs from a SentinelOne agent named "Deathstar"
+#### Fetch logs from agent
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
-PS > Start-S1FetchLogs -AgentID $Agent.id
+PS > Invoke-S1AgentAction -AgentID $Agent.id -FetchLogs
 Fetch Logs initiated for 1 agents
 ```
 
-### Send-S1Message
-Send a command to a SentinelOne agent named "Deathstar"
+#### Send a message to an agent
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
-PS > Send-S1Message -AgentID $Agent.id -Message "Do I execute order 66?"
+PS > Invoke-S1AgentAction -AgentID $Agent.id -SendMessage "Do I execute order 66?"
 ```
 
-### Start-S1NetworkQuarantine
-Start network quarantine for a SentinelOne agent named "Deathstar"
+#### Start network quarantine for an agent
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
-PS > Start-S1NetworkQuarantine -AgentID $Agent.id
+PS > Invoke-S1AgentAction -AgentID $Agent.id -DisconnectFromNetwork
 ```
 
-### Stop-S1NetworkQuarantine
-Stop network quarantine for a SentinelOne agent named "Deathstar"
+#### Stop network quarantine for an agent
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
-PS > Stop-S1NetworkQuarantine -AgentID $Agent.id
-```
-
-### Start-S1Reload
-Reload the SentinelOne agent services for an agent named "Deathstar"
-```PowerShell
-PS > $Agent = Get-S1Agent -Name "Deathstar"
-PS > Start-S1Reload -AgentID $Agent.id -Module "log"
-PS > Start-S1Reload -AgentID $Agent.id -Module "static"
-PS > Start-S1Reload -AgentID $Agent.id -Module "agent"
-PS > Start-S1Reload -AgentID $Agent.id -Module "monitor"
+PS > Invoke-S1AgentAction -AgentID $Agent.id -ReconnectToNetwork
 ```
