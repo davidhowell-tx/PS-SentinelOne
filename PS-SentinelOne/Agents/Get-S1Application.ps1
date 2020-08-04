@@ -65,14 +65,14 @@ function Get-S1Application {
 
         switch ($PSCmdlet.ParameterSetName) {
             "Agent" {
-                $URI = "/web/api/v2.0/agents/applications"
+                $URI = "/web/api/v2.1/agents/applications"
                 $Parameters = @{ "ids" = ($AgentID -join ",") }
 
                 $Response = Invoke-S1Query -URI $URI -Method Get -Parameters $Parameters
                 Write-Output $Response.data
             }
             "All" {
-                $URI = "/web/api/v2.0/installed-applications"
+                $URI = "/web/api/v2.1/installed-applications"
                 $Parameters = @{}
                 if ($ApplicationName) { $Parameters.Add("name__contains", ($ApplicationName -join ",") ) }
                 if ($ApplicationID) { $Parameters.Add("ids", ($ApplicationID -join ",") ) }
