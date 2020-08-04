@@ -48,6 +48,9 @@ Export-ModuleMember -Function Get-S1Blacklist
 Export-ModuleMember -Function New-S1Blacklist 
 Export-ModuleMember -Function Remove-S1Blacklist
 
+# Hashes
+Export-ModuleMember -Function Get-S1HashReputation
+
 # Policy
 Export-ModuleMember -Function Get-S1Policy
 Export-ModuleMember -Function Set-S1Policy
