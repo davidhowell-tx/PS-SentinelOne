@@ -30,6 +30,7 @@ Export-ModuleMember -Function Get-S1AvailableActions
 # Agents
 Export-ModuleMember -Function Get-S1Agent
 Export-ModuleMember -Function Get-S1Application
+Export-ModuleMember -Function Get-S1Passphrase
 Export-ModuleMember -Function Get-S1Threat
 
 # Deep Visibility
