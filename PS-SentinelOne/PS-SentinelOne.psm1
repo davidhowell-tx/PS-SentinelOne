@@ -62,5 +62,9 @@ Export-ModuleMember -Function Get-S1Group
 Export-ModuleMember -Function New-S1Group
 Export-ModuleMember -Function Remove-S1Group
 
+# Updates
+Export-ModuleMember -Function Get-S1Package
+Export-ModuleMember -Function Invoke-S1AgentUpdate
+
 # Dev Mode
 Export-ModuleMember -Function Invoke-S1Query

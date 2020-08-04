@@ -141,6 +141,9 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
   * [Send a message to an agent](#send-a-message-to-an-agent)
   * [Start network quarantine for an agent](#start-network-quarantine-for-an-agent)
   * [Stop network quarantine for an agent](#stop-network-quarantine-for-an-agent)
+* Updates
+  * [Get packages list](#get-packages-list)
+  * [Initiate agent update](#initiate-agent-update)
 
 ### Accounts
 
@@ -393,4 +396,26 @@ PS > Invoke-S1AgentAction -AgentID $Agent.id -DisconnectFromNetwork
 ```PowerShell
 PS > $Agent = Get-S1Agent -Name "Deathstar"
 PS > Invoke-S1AgentAction -AgentID $Agent.id -ReconnectToNetwork
+```
+
+### Updates
+
+#### Get packages list
+```PowerShell
+PS > $Site = Get-S1Site -Name "Rebel Alliance"
+PS > Get-S1Package -SiteID $Site.id
+```
+
+```PowerShell
+PS > $Site = Get-S1Site -Name "Rebel Alliance"
+PS > Get-S1Package -SiteID $Site.id -FileExtension ".exe" -PackageType "Agent" -OSType "windows"
+```
+
+#### Initiate agent update
+```PowerShell
+PS > $Site = Get-S1Site -Name "Rebel Alliance"
+PS > $Package = Get-S1Package -SiteID $Site.id -FileExtension .exe -PackageType Agent -OSType windows  | Where-Object { $_.status -like "GA*" } | Sort -Descending version | Select-Object -First 1
+PS > $Agent = Get-S1Agent -Name "Deathstar"
+PS > Invoke-S1AgentUpdate -AgentID $Agent.id -PackageID $Package.id
+Update initiated for 1 agents
 ```
