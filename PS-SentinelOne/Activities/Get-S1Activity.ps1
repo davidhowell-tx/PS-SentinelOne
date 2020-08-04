@@ -102,7 +102,7 @@ function Get-S1Activity {
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
         Write-Log -Message $InitializationLog -Level Informational
 
-        $URI = "/web/api/v2.0/activities"
+        $URI = "/web/api/v2.1/activities"
         $Parameters = @{}
         if ($ActivityType) { $Parameters.Add("activityTypes", ($ActivityType -join ",") ) }
         if ($ActivityID) { $Parameters.Add("ids", ($ActivityID -join ",") ) }
