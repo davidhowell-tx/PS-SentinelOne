@@ -33,6 +33,9 @@ Export-ModuleMember -Function Get-S1Application
 Export-ModuleMember -Function Get-S1Passphrase
 Export-ModuleMember -Function Get-S1Threat
 
+# Commands
+Export-ModuleMember -Function Get-S1Command
+
 # Deep Visibility
 Export-ModuleMember -Function New-S1DVQuery
 Export-ModuleMember -Function Get-S1DVQueryStatus
