@@ -126,6 +126,7 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
   * [Retrieve path exclusions for a site](#retrieve-path-exclusions-for-a-site)
 * Blacklist
   * [Retrieve blacklist for a site](#retrieve-blacklist-for-a-site)
+  * [Add a hash to the blacklist](#add-a-hash-to-the-blacklist)
 * Applications
   * [Retrieve installed applications for a specific agent](#retrieve-installed-applications-for-a-specific-agent)
   * [Retrieve application instances and versions by application name](#retrieve-application-instances-and-versions-by-application-name)
