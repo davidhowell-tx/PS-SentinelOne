@@ -36,9 +36,15 @@ Export-ModuleMember -Function Get-S1Threat
 # Commands
 Export-ModuleMember -Function Get-S1Command
 
-# Deep Visibility
+# Deep Visibility Core
 Export-ModuleMember -Function New-S1DVQuery
 Export-ModuleMember -Function Get-S1DVQueryStatus
+Export-ModuleMember -Function Get-S1DVEvents
+Export-ModuleMember -Function New-S1DVCriteria
+
+# Deep Visibility Extended
+Export-ModuleMember -Function Get-S1DvDnsRequest
+Export-ModuleMember -Function Get-S1DvDnsResponse
 
 # Exclusions
 Export-ModuleMember -Function Get-S1Exclusion
@@ -65,6 +71,3 @@ Export-ModuleMember -Function Remove-S1Group
 # Updates
 Export-ModuleMember -Function Get-S1Package
 Export-ModuleMember -Function Invoke-S1AgentUpdate
-
-# Dev Mode
-Export-ModuleMember -Function Invoke-S1Query

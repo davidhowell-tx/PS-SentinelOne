@@ -1,4 +1,4 @@
-function New-S1DVQuery {
+function New-S1DvQuery {
     [CmdletBinding()]
     Param(
         [Parameter()]

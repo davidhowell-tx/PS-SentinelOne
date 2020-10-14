@@ -1,4 +1,4 @@
-function Get-S1DVQueryStatus {
+function Get-S1DvQueryStatus {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory=$True)]
