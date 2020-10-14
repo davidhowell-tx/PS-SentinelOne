@@ -9,6 +9,10 @@ function New-S1DVQuery {
         [Parameter(Mandatory=$True)]
         $Query,
 
+        [Parameter(Mandatory=$False)]
+        [ValidateSet(1, 10, 100, 1000, 2000, 5000, 10000, 20000)]
+        $Limit = 1000,
+
         [Parameter(Mandatory=$True,ParameterSetName="TimeFrame")]
         [ValidateSet("Last Hour","Last 24 Hours","Today", "Last 48 Hours", "Last 7 Days", "Last 30 Days", "This Month", "Last 2 Months", "Last 3 Months")]
         [String]
@@ -54,16 +58,15 @@ function New-S1DVQuery {
             "Last 3 Months" { $FromDate = Get-Date -Year $ToDate.Year -Month $ToDate.AddMonths(-2).Month -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0 }
         }
     }
-
-    $Epoch = [DateTime]::new(1970,1,1,0,0,0,([DateTimeKind]::Utc))
-    $To = [int64]($ToDate.ToUniversalTime() - $Epoch).TotalMilliseconds
-    $From = [int64]($FromDate.ToUniversalTime() - $Epoch).TotalMilliseconds
+    $To = Convert-S1Time -Value $ToDate
+    $From = Convert-S1Time -Value $FromDate
 
     $URI = "/web/api/v2.1/dv/init-query"
     $Method = "POST"
     $Body = @{
-        fromDate = $To
-        toDate = $From
+        fromDate = $From
+        toDate = $To
+        limit = $Limit
         query = $Query
         queryType = @( $QueryType )
     }
