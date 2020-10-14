@@ -1,4 +1,4 @@
-function Format-DvEvents {
+function Format-S1DvEvent {
     [CmdletBinding()]
     Param(
         [Parameter(ValueFromPipeline)]

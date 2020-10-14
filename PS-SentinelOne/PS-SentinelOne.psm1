@@ -43,6 +43,7 @@ Export-ModuleMember -Function Get-S1DVEvents
 Export-ModuleMember -Function New-S1DVCriteria
 
 # Deep Visibility Extended
+Export-ModuleMember -Function Format-S1DvEvent
 Export-ModuleMember -Function Get-S1DvDnsRequest
 Export-ModuleMember -Function Get-S1DvDnsResponse
 
