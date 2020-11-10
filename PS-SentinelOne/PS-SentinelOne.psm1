@@ -39,13 +39,11 @@ Export-ModuleMember -Function Get-S1Command
 # Deep Visibility Core
 Export-ModuleMember -Function New-S1DVQuery
 Export-ModuleMember -Function Get-S1DVQueryStatus
-Export-ModuleMember -Function Get-S1DVEvents
-Export-ModuleMember -Function New-S1DVCriteria
+Export-ModuleMember -Function Get-S1DvQueryResults
 
 # Deep Visibility Extended
 Export-ModuleMember -Function Format-S1DvEvent
-Export-ModuleMember -Function Get-S1DvDnsRequest
-Export-ModuleMember -Function Get-S1DvDnsResponse
+Export-ModuleMember -Function Get-S1DvEvents
 
 # Exclusions
 Export-ModuleMember -Function Get-S1Exclusion
