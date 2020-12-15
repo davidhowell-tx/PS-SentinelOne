@@ -121,10 +121,10 @@ function Get-S1Activity {
             $Parameters.Add("createdAt__between", "$CreatedAfterUnix-$CreatedBeforeUnix")
         } elseif ($CreatedAfter) {
             $CreatedAfterString = Format-Date -InputObject $CreatedAfter
-            $Parameters.Add("createdAt__lte", $CreatedAfterString)
+            $Parameters.Add("createdAt__gte", $CreatedAfterString)
         } elseif ($CreatedBefore) {
             $CreatedBeforeString = Format-Date -InputObject $CreatedBefore
-            $Parameters.Add("createdAt__gte", $CreatedBeforeString)
+            $Parameters.Add("createdAt__lte", $CreatedBeforeString)
         }
 
         $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
