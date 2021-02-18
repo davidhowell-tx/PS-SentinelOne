@@ -94,6 +94,7 @@ function Invoke-S1Query {
         $MaxCount = 1000
     }
 
+    # Start building request
     $Request = @{}
     $Request.Add("Method", $Method)
     $Request.Add("ErrorVariable", "RestError")
@@ -106,6 +107,8 @@ function Invoke-S1Query {
     if ($Body) {
         $Request.Add("Body", $Body)
     }
+
+    # Build request headers and add to request
     $Headers = @{}
     if ($Script:PSSentinelOne.ApiToken) {
         $ApiToken = Unprotect-S1Token -String $Script:PSSentinelOne.ApiToken
@@ -116,16 +119,22 @@ function Invoke-S1Query {
     }
     $Request.Add("Headers", $Headers)
 
+    # Start building request URI
     $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$URI"
     $QueryString = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
+
+    # Add any parameters supplied with -Parameters switch to Query String
     if ($Parameters.Count -gt 0) {
         $Parameters.GetEnumerator() | ForEach-Object {
             $QueryString.Add($_.Name, $_.Value)       
         }
     }
+
+    # Process result limit
     if ($Count) {
         if ($Count -lt $MaxCount) {
             $QueryString.Add("limit", $Count)
+            $Count = $Count - $Count
         } else {
             $QueryString.Add("limit", $MaxCount)
             $Count = $Count - $MaxCount
@@ -134,11 +143,16 @@ function Invoke-S1Query {
     if ($Recurse -and $QueryString -notcontains "limit") {
         $QueryString.Add("limit", $MaxCount)
     }
+
+    # Add querystring to URI
     if ($QueryString.Count -gt 0) {
         $URIBuilder.Query = $QueryString.ToString()
     }
+
+    # Add URI to request
     $Request.Add("URI", $URIBuilder.Uri.OriginalString)
 
+    # Send request
     Try {
         Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Informational
         $Response = Invoke-RestMethod @Request
@@ -148,6 +162,7 @@ function Invoke-S1Query {
     }
     Write-Output $Response
 
+    # Recurse through all results using the pagination cursor
     if ($Recurse) {
         while ($Response.pagination.nextCursor) {
             $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$URI"
@@ -168,6 +183,7 @@ function Invoke-S1Query {
             if ($Count -lt $MaxCount) {
                 $QueryString.Remove("limit")
                 $QueryString.Add("limit", $Count)
+                $Count = $Count - $Count
             } else {
                 $Count = $Count - $MaxCount
             }
