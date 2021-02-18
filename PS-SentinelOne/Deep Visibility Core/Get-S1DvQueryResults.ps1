@@ -1,14 +1,13 @@
 function Get-S1DvQueryResults {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName="Default")]
     Param(
         [Parameter(Mandatory=$True)]
         [String]
         $QueryID,
 
-        [Parameter(Mandatory=$False)]
-        [ValidateRange(1,100)]
-        [int]
-        $Limit=100
+        [Parameter(Mandatory=$True,ParameterSetName="CountOnly")]
+        [Switch]
+        $CountOnly
     )
 
     # Log the function and parameters being executed
@@ -16,13 +15,18 @@ function Get-S1DvQueryResults {
     $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
     Write-Log -Message $InitializationLog -Level Informational
 
+    $Limit = 100
     $URI = "/web/api/v2.1/dv/events"
     $Parameters = @{}
     $Parameters.Add("queryId", $QueryID)
     $Parameters.Add("limit", $Limit)
     $Method = "GET"
 
-    $Response = Invoke-S1Query -URI $URI -Method $Method -Parameters $Parameters -Recurse
+    if ($PSCmdlet.ParameterSetName -eq "CountOnly") {
+        $Response = Invoke-S1Query -URI $URI -Method $Method -Parameters $Parameters
+        return $Response.pagination.totalItems
+    }
 
-    Write-Output $Response.data
+    $Response = Invoke-S1Query -URI $URI -Method $Method -Parameters $Parameters -Recurse
+    return $Response.data
 }
