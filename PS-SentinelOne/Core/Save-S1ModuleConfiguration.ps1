@@ -26,7 +26,7 @@ function Save-S1ModuleConfiguration {
     
     Try {
         Write-Log -Message "Saving configuration to $Path" -Level Verbose
-        $InputObject | ConvertTo-Json | Out-File -FilePath $Path
+        $InputObject | ConvertTo-Json | Out-File -FilePath (New-Item $Path -Force)
     } Catch {
         Write-Log -Message "Error received when attempting to save configuration to $Path" -Level Error
     }
