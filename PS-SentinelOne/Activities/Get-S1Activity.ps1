@@ -120,10 +120,10 @@ function Get-S1Activity {
             [int64]$CreatedBeforeUnix = Format-Date -InputObject $CreatedBefore -UnixMS
             $Parameters.Add("createdAt__between", "$CreatedAfterUnix-$CreatedBeforeUnix")
         } elseif ($CreatedAfter) {
-            $CreatedAfterString = Format-Date -InputObject $CreatedAfter
+            $CreatedAfterString = Format-Date -InputObject $CreatedAfter -UnixMS
             $Parameters.Add("createdAt__gte", $CreatedAfterString)
         } elseif ($CreatedBefore) {
-            $CreatedBeforeString = Format-Date -InputObject $CreatedBefore
+            $CreatedBeforeString = Format-Date -InputObject $CreatedBefore -UnixMS
             $Parameters.Add("createdAt__lte", $CreatedBeforeString)
         }
 
