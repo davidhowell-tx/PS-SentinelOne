@@ -3,6 +3,9 @@ function Get-S1Activity {
     .SYNOPSIS
         Retrieve Activities from the Activities log
     
+    .PARAMETER Count
+        Limit the number of results returned
+    
     .PARAMETER ActivityType
         Return only these activity codes (comma-separated list)
     
@@ -48,6 +51,10 @@ function Get-S1Activity {
     #>
     [CmdletBinding()]
     Param(
+        [Parameter()]
+        [int]
+        $Count,
+
         [Parameter()]
         [int[]]
         $ActivityType,
@@ -127,7 +134,11 @@ function Get-S1Activity {
             $Parameters.Add("createdAt__lte", $CreatedBeforeString)
         }
 
-        $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
+        if ($Count) {
+            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Count $Count
+        } else {
+            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
+        }
         Write-Output $Response.data
     }
 }
