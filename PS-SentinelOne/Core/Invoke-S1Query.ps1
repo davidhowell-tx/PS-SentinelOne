@@ -120,7 +120,7 @@ function Invoke-S1Query {
     $Request.Add("Headers", $Headers)
 
     # Start building request URI
-    $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$URI"
+    $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$($URI.Trim("/"))"
     $QueryString = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
 
     # Add any parameters supplied with -Parameters switch to Query String
@@ -165,7 +165,7 @@ function Invoke-S1Query {
     # Recurse through all results using the pagination cursor
     if ($Recurse) {
         while ($Response.pagination.nextCursor) {
-            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$URI"
+            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$($URI.Trim("/"))"
             $QueryString.Add("cursor", $Response.pagination.nextCursor)
             $URIBuilder.Query = $QueryString.ToString()
             $Request.URI = $URIBuilder.Uri.OriginalString
@@ -177,21 +177,22 @@ function Invoke-S1Query {
         }
     }
 
+    # Recurse through results until requested count is met. This could result in too many results, the commandlets should deal with returning exact numbers
     if ($Count) {
-        while ($Count -gt 0) {
-            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$URI"
-            if ($Count -lt $MaxCount) {
-                $QueryString.Remove("limit")
-                $QueryString.Add("limit", $Count)
-                $Count = $Count - $Count
-            } else {
-                $Count = $Count - $MaxCount
-            }
+        while ($Count -gt 0 -and $Response.pagination.nextCursor) {
+            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$($URI.Trim("/"))"
+            $QueryString.Add("cursor", $Response.pagination.nextCursor)
             $URIBuilder.Query = $QueryString.ToString()
             $Request.URI = $URIBuilder.Uri.OriginalString
             Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Informational
             $Response = Invoke-RestMethod @Request
             Write-Output $Response
+            if ($Count -lt $MaxCount) {
+                $Count = $Count - $Count
+            } else {
+                $Count = $Count - $MaxCount
+            }
+            $QueryString.Remove("cursor")
         }
     }
 }
