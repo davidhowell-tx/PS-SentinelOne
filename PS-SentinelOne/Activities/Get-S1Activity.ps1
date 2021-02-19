@@ -110,6 +110,7 @@ function Get-S1Activity {
         Write-Log -Message $InitializationLog -Level Informational
 
         $URI = "/web/api/v2.1/activities"
+        [uint32]$MaxCount = 1000
         $Parameters = @{}
         if ($ActivityType) { $Parameters.Add("activityTypes", ($ActivityType -join ",") ) }
         if ($ActivityID) { $Parameters.Add("ids", ($ActivityID -join ",") ) }
@@ -135,10 +136,10 @@ function Get-S1Activity {
         }
 
         if ($Count) {
-            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Count $Count
+            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Count $Count -MaxCount $MaxCount
             Write-Output $Response.data[0..($Count-1)]
         } else {
-            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
+            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse -MaxCount $MaxCount
             Write-Output $Response.data
         }
     }
