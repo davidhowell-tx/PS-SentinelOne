@@ -136,9 +136,10 @@ function Get-S1Activity {
 
         if ($Count) {
             $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Count $Count
+            Write-Output $Response.data[0..($Count-1)]
         } else {
             $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
+            Write-Output $Response.data
         }
-        Write-Output $Response.data
     }
 }
