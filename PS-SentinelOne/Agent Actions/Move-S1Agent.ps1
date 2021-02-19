@@ -11,10 +11,13 @@ function Move-S1Agent {
 
     .PARAMETER TargetSiteID
         Site ID for the site where the agent should be moved
+    
+    .PARAMETER TargetConsoleToken
+        Token for the site in the management console where the agent should be moved
     #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory=$False)]
+        [Parameter(Mandatory=$True)]
         [String[]]
         $AgentID,
 
@@ -26,7 +29,12 @@ function Move-S1Agent {
         [Parameter(Mandatory=$True,ParameterSetName="MoveToSite")]
         [ValidateNotNullOrEmpty()]
         [String]
-        $TargetSiteID
+        $TargetSiteID,
+
+        [Parameter(Mandatory=$True,ParameterSetName="MoveToConsole")]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $TargetConsoleToken
     )
     # Log the function and parameters being executed
     $InitializationLog = $MyInvocation.MyCommand.Name
@@ -36,16 +44,23 @@ function Move-S1Agent {
     $Body = @{ filter = @{}}
     if ($GroupID) { $Body.filter.Add("groupIds", ($GroupID -join ","))}
     
-    if ($PSCmdlet.ParameterSetName -eq "MoveToGroup") {
-        $URI = "/web/api/v2.1/groups/$TargetGroupID/move-agents"
-        $Method = "Put"
-        if ($AgentID) { $Body.filter.Add("agentIds", ($AgentID -join ","))}
-    }
-    if ($PSCmdlet.ParameterSetName -eq "MoveToSite") {
-        $URI = "/web/api/v2.1/agents/actions/move-to-site"
-        $Method = "Post"
-        $Body.Add("data", @{"targetSiteId" = $TargetSiteID})
-        if ($AgentID) { $Body.filter.Add("ids", ($AgentID -join ","))}
+    switch ($PSCmdlet.ParameterSetName) {
+        "MoveToGroup" {
+            $URI = "/web/api/v2.1/groups/$TargetGroupID/move-agents"
+            $Method = "Put"
+            $Body.filter.Add("agentIds", ($AgentID -join ","))
+        }
+        "MoveToSite" {
+            $URI = "/web/api/v2.1/agents/actions/move-to-site"
+            $Method = "Post"
+            $Body.Add("data", @{"targetSiteId" = $TargetSiteID})
+            $Body.filter.Add("ids", ($AgentID -join ","))
+        }
+        "MoveToConsole" {
+            $URI = "/web/api/v2.1/agents/actions/move-to-console"
+            $Method = "Post"
+            $Body.Add("data", @{"token" = $TargetConsoleToken})
+        }
     }
 
     $Response = Invoke-S1Query -URI $URI -Method $Method -Body ($Body | ConvertTo-Json) -ContentType "application/json"
