@@ -159,6 +159,7 @@ function Invoke-S1Query {
         $Response = Invoke-RestMethod @Request
     } Catch {
         Write-Log -Message $RestError.InnerException.Message -Level Warning
+        Write-Log -Message $RestError.Message -Level Warning
         return
     }
     Write-Output $Response
