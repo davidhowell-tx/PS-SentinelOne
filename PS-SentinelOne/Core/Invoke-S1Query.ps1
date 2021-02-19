@@ -21,6 +21,9 @@ function Invoke-S1Query {
     .PARAMETER Count
         Used to limit the number of results in the response, if supported by the specific API
     
+    .PARAMETER MaxCount
+        Specify the maximum number of results allowed by the API. This value differs between APIs with a default of 100
+    
     .PARAMETER Recurse
         Used to follow the cursor in paginated requests to retrieve all possible results
     
@@ -56,6 +59,10 @@ function Invoke-S1Query {
         [Uint32]
         $Count,
 
+        [Parameter(Mandatory=$False)]
+        [Uint32]
+        $MaxCount=100,
+
         [Parameter(Mandatory=$False,ParameterSetName="Recurse")]
         [Switch]
         $Recurse,
@@ -86,12 +93,6 @@ function Invoke-S1Query {
     if (-not $Script:PSSentinelOne.ApiToken -and -not $Script:PSSentinelOne.TemporaryToken -and -not $URI -eq "/web/api/v2.0/users/login") {
         Write-Log -Message "Please use Set-S1ModuleConfiguration to save your APIToken, or use Get-S1Token to authenticate and generate a temporary token." -Level Error
         return
-    }
-
-    if ($URI -eq "/web/api/v2.0/groups" ) {
-        $MaxCount = 100
-    } else {
-        $MaxCount = 1000
     }
 
     # Start building request
