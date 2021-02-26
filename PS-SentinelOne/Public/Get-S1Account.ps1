@@ -3,12 +3,6 @@ function Get-S1Account {
     .SYNOPSIS
         Gets information related to SentinelOne Accounts
     
-    .PARAMETER Name
-        Name of the account to retrieve
-
-    .PARAMETER AccountID
-        A list of Account IDs to filter results
-    
     .NOTES Options not yet implemented:
         query, states, createdAt, updatedAt, expiration,
         totalLicenses, activeLicenses, accountType
@@ -16,10 +10,12 @@ function Get-S1Account {
     #>
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
+        # Filter the accounts list to a specific name
         [Parameter(Mandatory=$True,ParameterSetName="Name")]
         [String]
         $Name,
 
+        # Filter the accounts list to specific account IDs
         [Parameter(Mandatory=$True,ParameterSetName="AccountID")]
         [String[]]
         $AccountID
