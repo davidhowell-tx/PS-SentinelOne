@@ -1,147 +1,151 @@
 function Invoke-S1AgentAction {
     <#
     .SYNOPSIS
-        Initiates a scan on a SentinelOne agent
-    
-    .PARAMETER AgentID
-        Agent ID for the agent you want to scan
-    
-    .PARAMETER Scan
-        Initiates a scan on a SentinelOne agent
-    
-    .PARAMETER AbortScan
-        Aborts a running scan on a SentinelOne agent
-    
-    .PARAMETER Protect
-        Sends a protect command to a SentinelOne agent
-    
-    .PARAMETER Unprotect
-        Sends an unprotect command to a SentinelOne agent
-    
-    .PARAMETER Reload
-        Initiates service reload on a SentinelOne agent
-    
-    .PARAMETER SendMessage
-        Sends a message to SentinelOne agents
-    
-    .PARAMETER FetchLogs
-        Sends a fetch log command for a SentinelOne agent
-    
-    .PARAMETER DisconnectFromNetwork
-        Sends a command to disconnect a SentinelOne agent from the network
-    
-    .PARAMETER ReconnectToNetwork
-        Sends a command to reconnect a SentinelOne agent to the network
-    
-    .PARAMETER ResetLocalConfig
-        Sends a command to clear the SentinelCtl changes for targeted agents
-    
-    .PARAMETER ApproveUninstall
-        Approve an uninstall request
-
-    .PARAMETER RejectUninstall
-        Reject an uninstall request
-
-    .PARAMETER MoveToSite
-        Move an agent to a different site. Use with -TargetSiteID
-
-    .PARAMETER TargetSiteID
-        Site ID for the Site where the agent should be moved
-
-    .PARAMETER Decommission
-        Decommission an agent
+        Initiate various actions against SentinelOne agents
     #>
     [CmdletBinding()]
     Param(
+        # ID for the Agent(s) being targeted for an action
         [Parameter(Mandatory=$True)]
+        [ValidateNotNullorEmpty()]
         [String[]]
         $AgentID,
 
+        # Initiates a scan on the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="Scan")]
         [Switch]
         $Scan,
 
+        # Aborts a running scan for the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="AbortScan")]
         [Switch]
         $AbortScan,
 
-        [Parameter(Mandatory=$True,ParameterSetName="Protect")]
-        [Switch]
-        $Protect,
-
-        [Parameter(Mandatory=$True,ParameterSetName="Unprotect")]
-        [Switch]
-        $Unprotect,
-
+        # Initiates service reload for the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="Reload")]
         [ValidateSet("log", "static", "agent", "monitor")]
         [String]
         $Reload,
 
+        # Starts the remote profiler (for troubleshooting) for the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="StartRemoteProfiling")]
         [Switch]
         $StartRemoteProfiling,
 
+        # Sets the remote profiler timeout
         [Parameter(Mandatory=$True,ParameterSetName="StartRemoteProfiling")]
         [uint32]
         $TimeoutInSeconds,
 
+        # Stops the remote profiler for the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="StopRemoteProfiling")]
         [Switch]
         $StopRemoteProfiling,
 
+        # Initiate an agent update for the targeted agents
+        [Parameter(Mandatory=$True,ParameterSetName="UpdateSoftware")]
+        [Switch]
+        $UpdateSoftware,
+
+        # The Package ID for the update to be applied
+        [Parameter(Mandatory=$True,ParameterSetName="UpdateSoftware")]
+        [ValidateNotNullorEmpty()]
+        [String]
+        $PackageID,
+
+        # The timing for the update, either immediate or follow the configured update schedule
+        [Parameter(Mandatory=$True,ParameterSetName="UpdateSoftware")]
+        [ValidateSet("immediately", "by_update_schedule")]
+        [String]
+        $UpdateTiming,
+
+        # Randomize the UUID for the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="RandomizeUUID")]
         [Switch]
         $RandomizeUUID,
 
+        # Sends a message to the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="SendMessage")]
+        [ValidateNotNullorEmpty()]
         [String]
         $SendMessage,
 
+        # Update the External ID for the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="SetExternalID")]
         [String]
         $SetExternalID,
 
+        # Move agents to a new group
         [Parameter(Mandatory=$True,ParameterSetName="MoveToGroup")]
         [Switch]
         $MoveToGroup,
 
+        # The group ID to which the targeted agents should be moved
         [Parameter(Mandatory=$True,ParameterSetName="MoveToGroup")]
         [String]
         $GroupID,
 
+        # Move agents to a new site
         [Parameter(Mandatory=$True,ParameterSetName="MoveToSite")]
         [Switch]
         $MoveToSite,
 
+        # The site ID to which the targeted agents should be moved
         [Parameter(Mandatory=$True,ParameterSetName="MoveToSite")]
         [String]
         $SiteID,
         
+        # Move agents to a new console
         [Parameter(Mandatory=$True,ParameterSetName="MoveToConsole")]
         [Switch]
         $MoveToConsole,
 
+        # The site token for the console to which the targeted agents should be moved
         [Parameter(Mandatory=$True,ParameterSetName="MoveToConsole")]
         [String]
         $ConsoleSiteToken,
 
+        # Fetch logs from the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="FetchLogs")]
         [Switch]
         $FetchLogs,
 
+        # Fetch platform logs
         [Parameter(Mandatory=$False,ParameterSetName="FetchLogs")]
         [Boolean]
         $PlatformLogs = $True,
 
+        # Fetch agent logs
         [Parameter(Mandatory=$False,ParameterSetName="FetchLogs")]
         [Boolean]
         $AgentLogs = $True,
 
+        # Fetch customer facing logs
         [Parameter(Mandatory=$False,ParameterSetName="FetchLogs")]
         [Boolean]
         $CustomerFacingLogs = $True,
 
+        # Disable the agent software
+        [Parameter(Mandatory=$True,ParameterSetName="DisableAgent")]
+        [Switch]
+        $DisableAgent,
+
+        # Re-enable the agent software
+        [Parameter(Mandatory=$True,ParameterSetName="EnableAgent")]
+        [Switch]
+        $EnableAgent,
+
+        # Disconnect the targeted agents from the network (network quarantine)
+        [Parameter(Mandatory=$True,ParameterSetName="DisconnectFromNetwork")]
+        [Switch]
+        $DisconnectFromNetwork,
+
+        # Connect the targeted agents back to the network (network unquarantine)
+        [Parameter(Mandatory=$True,ParameterSetName="ConnectToNetwork")]
+        [Switch]
+        $ConnectToNetwork,
+
+        # Fetch firewall logs from the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="FetchFirewallLogs")]
         [Switch]
         $FetchFirewallLogs,
@@ -168,45 +172,29 @@ function Invoke-S1AgentAction {
         [String]
         $FirewallRuleFormat = "native",
 
-        [Parameter(Mandatory=$True,ParameterSetName="DisconnectFromNetwork")]
-        [Switch]
-        $DisconnectFromNetwork,
-
-        [Parameter(Mandatory=$True,ParameterSetName="ReconnectToNetwork")]
-        [Switch]
-        $ReconnectToNetwork,
-
         [Parameter(Mandatory=$True,ParameterSetName="ResetLocalConfig")]
         [Switch]
         $ResetLocalConfig,
 
+        # Approve uninstallation of the agent software
         [Parameter(Mandatory=$True,ParameterSetName="ApproveUninstall")]
         [Switch]
         $ApproveUninstall,
 
+        # Reject uninstallation of the agent software
         [Parameter(Mandatory=$True,ParameterSetName="RejectUninstall")]
         [Switch]
         $RejectUninstall,
 
+        # Initiate a remote uninstall of the agent software
         [Parameter(Mandatory=$True,ParameterSetName="Uninstall")]
         [Switch]
         $Uninstall,
 
-        [Parameter(Mandatory=$True,ParameterSetName="MoveToSite")]
-        [String]
-        $TargetSiteID,
-
+        # Decommission the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="Decommission")]
         [Switch]
         $Decommission,
-
-        [Parameter(Mandatory=$True,ParameterSetName="DisableAgent")]
-        [Switch]
-        $DisableAgent,
-
-        [Parameter(Mandatory=$True,ParameterSetName="EnableAgent")]
-        [Switch]
-        $EnableAgent,
 
         [Parameter(Mandatory=$True,ParameterSetName="DisableRanger")]
         [Switch]
@@ -216,10 +204,12 @@ function Invoke-S1AgentAction {
         [Switch]
         $EnableRanger,
 
+        # Check if a remote shell can be opened to the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="CanRunRemoteShell")]
         [Switch]
         $CanRunRemoteShell,
 
+        # Request the agent to update the application list for the targeted agents
         [Parameter(Mandatory=$True,ParameterSetName="GetApplications")]
         [Switch]
         $GetApplications,
@@ -228,10 +218,12 @@ function Invoke-S1AgentAction {
         [Switch]
         $MarkAsUpToDate,
 
+        # Initiate a remote restart
         [Parameter(Mandatory=$True,ParameterSetName="Restart")]
         [Switch]
         $Restart,
 
+        # Initiate a remote shutdown
         [Parameter(Mandatory=$True,ParameterSetName="Shutdown")]
         [Switch]
         $Shutdown
@@ -254,14 +246,6 @@ function Invoke-S1AgentAction {
             $URI = "/web/api/v2.1/agents/actions/abort-scan"
             $OutputMessage = "Scan aborted for"
         }
-        "Protect" {
-            $URI = "/web/api/v2.1/private/agents/support-actions/protect"
-            $OutputMessage = "Protect command initiated for"
-        }
-        "Unprotect" {
-            $URI = "/web/api/v2.1/private/agents/support-actions/unprotect"
-            $OutputMessage = "Unprotect command initiated for"
-        }
         "Reload" {
             $URI = "/web/api/v2.1/private/agents/support-actions/reload"
             $Body.data.Add("module", $Reload.ToLower())
@@ -275,6 +259,15 @@ function Invoke-S1AgentAction {
         "StopRemoteProfiling" {
             $URI = "/web/api/v2.1/agents/actions/stop-profiling"
             $OutputMessage = "Stop Remote Profiling initiated for"
+        }
+        "UpdateSoftware" {
+            $URI = "/web/api/v2.1/agents/actions/update-software"
+            $Body.data.Add("packageId", $PackageID)
+            switch ($UpdateTiming) {
+                "immediately" { $Body.data.Add("isScheduled", $False) }
+                "by_update_schedule" { $Body.data.Add("isScheduled", $True) }
+            }
+            $OutputMessage = "Software Update initiated for"
         }
         "RandomizeUUID" {
             $URI = "/web/api/v2.1/agents/actions/randomize-uuid"
@@ -330,9 +323,9 @@ function Invoke-S1AgentAction {
             $URI = "/web/api/v2.1/agents/actions/disconnect"
             $OutputMessage = "Network Disconnect initiated for"
         }
-        "ReconnectToNetwork" {
+        "ConnectToNetwork" {
             $URI = "/web/api/v2.1/agents/actions/connect"
-            $OutputMessage = "Network Reconnect initiated for"
+            $OutputMessage = "Network Connect initiated for"
         }
         "ResetLocalConfig" {
             $URI = "/web/api/v2.1/agents/actions/reset-local-config"
