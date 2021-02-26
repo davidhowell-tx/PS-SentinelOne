@@ -1,11 +1,11 @@
 function Get-S1Passphrase {
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
-        [Parameter(Mandatory=$False)]
+        [Parameter(Mandatory=$True,ParameterSetName="AgentName")]
         [String]
         $AgentName,
 
-        [Parameter(Mandatory=$False)]
+        [Parameter(Mandatory=$True,ParameterSetName="AgentID")]
         [String[]]
         $AgentID
     )
