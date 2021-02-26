@@ -34,17 +34,13 @@ Installation of this module currently consists of a pair of scripts that will co
 ## Configuration
 
 PS-SentinelOne includes commandlets to configure information specific to your environment, such as the URI of your SentinelOne console, and your API Token.
+
 You may choose to  cache this information for the current session, or save the information to disk. Saved API Tokens are protected by using secure strings.
 
 ### In Session Configuration
 
 Commandlets will utilize the URI and API Token cached in the current session.
 If no URI or API Token is cached, an attempt will be mode to retrieve any settings that have been saved to disk.
-
-Check the settings in the current session
-```PowerShell
-PS > Get-S1ModuleConfiguration
-```
 
 Set the base URI for your management console, and your API Token for this session
 ```PowerShell
@@ -62,6 +58,11 @@ User: john.smith@acme.com
 Password for user john.smith@acme.com: **************
 ```
 
+Check the settings in the current session
+```PowerShell
+PS > Get-S1ModuleConfiguration
+```
+
 ### Persisted Configuration
 
 Save to disk the base URI for your management console and your API Token.
@@ -74,13 +75,12 @@ Review any settings saved to disk
 PS > Get-S1ModuleConfiguration -Persisted
 ```
 
-Manually import saved settings into current session
+Import settings saved to disk into the current session
 ```PowerShell
 PS > Get-S1ModuleConfiguration -Persisted -Cache
 ```
 
-Saved settings do not need to be manually imported into the current session. This will be done automatically when you attempt to run a commandlet.
-You can test this by using the following process:
+Saved settings do not need to be manually imported into the current session. If there are settings saved to disk and the current session has none configured, the module will automatically import the saved settings when running your first commandlet that requires them. You can test this by doing the following
 ```PowerShell
 PS > Import-Module .\PS-SentinelOne.psm1
 PS > Get-S1ModuleConfiguration
@@ -96,12 +96,16 @@ PS > Get-S1ModuleConfiguration
 Name                           Value
 ----                           -----
 ManagementURL                  https://management-tenant.sentinelone.net
-ApiToken                       <API Token>
+ApiToken                       <API Token as Secure String>
 ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\config.json
 ```
 
 ----------
 ## Capability
+For API coverage, see the [API Coverage documentation](API Coverage.md)
+
+The examples below need to be revised and expanded upon, please bare with me.
+
 * Accounts
   * [Retrieve accounts list](#retrieve-accounts-list)
 * Sites
