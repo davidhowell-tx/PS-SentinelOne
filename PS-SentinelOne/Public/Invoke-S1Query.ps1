@@ -155,15 +155,20 @@ function Invoke-S1Query {
 
     # Send request
     Try {
-        Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Informational
+        Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Verbose
         $Response = Invoke-RestMethod @Request
     } Catch {
         Write-Log -Message $RestError.InnerException.Message -Level Warning
         Write-Log -Message $RestError.Message -Level Warning
-        return
+        Throw
     }
-    Write-Output $Response
 
+    if ($Parameters.countOnly) {
+        Write-Output $Response.pagination.totalItems
+    } else {
+        Write-Output $Response
+    }
+    
     # Recurse through all results using the pagination cursor
     if ($Recurse) {
         while ($Response.pagination.nextCursor) {
@@ -171,7 +176,7 @@ function Invoke-S1Query {
             $QueryString.Add("cursor", $Response.pagination.nextCursor)
             $URIBuilder.Query = $QueryString.ToString()
             $Request.URI = $URIBuilder.Uri.OriginalString
-            Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Informational
+            Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Verbose
             $Response = Invoke-RestMethod @Request
             Write-Output $Response
     
@@ -186,7 +191,7 @@ function Invoke-S1Query {
             $QueryString.Add("cursor", $Response.pagination.nextCursor)
             $URIBuilder.Query = $QueryString.ToString()
             $Request.URI = $URIBuilder.Uri.OriginalString
-            Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Informational
+            Write-Log -Message "[$Method] $($URIBuilder.Uri.OriginalString)" -Level Verbose
             $Response = Invoke-RestMethod @Request
             Write-Output $Response
             if ($Count -lt $MaxCount) {
