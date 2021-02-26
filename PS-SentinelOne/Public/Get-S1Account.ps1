@@ -18,7 +18,12 @@ function Get-S1Account {
         # Filter the accounts list to specific account IDs
         [Parameter(Mandatory=$True,ParameterSetName="AccountID")]
         [String[]]
-        $AccountID
+        $AccountID,
+
+        # Limit the number of retrieved accounts
+        [Parameter()]
+        [int]
+        $Count
     )
     Process {
         # Log the function and parameters being executed
@@ -27,12 +32,18 @@ function Get-S1Account {
         Write-Log -Message $InitializationLog -Level Informational
 
         $URI = "/web/api/v2.1/accounts"
+        $MaxCount = 100
         $Parameters = @{}
         switch ($PSCmdlet.ParameterSetName) {
             "Name" { $Parameters.Add("name", $Name) }
             "AccountID" { $Parameters.Add("ids", ($AccountID -join ",")) }
         }
-        $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
+        if ($Count) {
+            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Count $Count -MaxCount $MaxCount
+        } else {
+            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse -MaxCount $MaxCount
+        }
+        
         Write-Output $Response.data
     }
   }
