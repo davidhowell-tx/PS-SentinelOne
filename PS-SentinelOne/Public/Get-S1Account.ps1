@@ -11,12 +11,12 @@ function Get-S1Account {
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
         # Filter the accounts list to a specific name
-        [Parameter(Mandatory=$True,ParameterSetName="Name")]
+        [Parameter(Mandatory=$False)]
         [String]
         $Name,
 
         # Filter the accounts list to specific account IDs
-        [Parameter(Mandatory=$True,ParameterSetName="AccountID")]
+        [Parameter(Mandatory=$False)]
         [String[]]
         $AccountID,
 
@@ -63,10 +63,8 @@ function Get-S1Account {
         if ($SortBy) { $Parameters.Add("sortBy", $SortBy) }
         if ($SortOrder) { $Parameters.Add("sortOrder", $SortOrder) }
         if ($CountOnly) { $Parameters.Add("countOnly", $True) }
-        switch ($PSCmdlet.ParameterSetName) {
-            "Name" { $Parameters.Add("name", $Name) }
-            "AccountID" { $Parameters.Add("ids", ($AccountID -join ",")) }
-        }
+        if ($Name) { $Parameters.Add("name", $Name) }
+        if ($AccountID) { $Parameters.Add("ids", ($AccountID -join ",")) }
         if ($Count) {
             $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Count $Count -MaxCount $MaxCount
         } else {
