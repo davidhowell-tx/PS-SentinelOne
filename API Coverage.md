@@ -79,69 +79,73 @@ Not currently supported. May be added in the future.
 ### Abort Scan
 
 ```PowerShell
-Invoke-S1AgentAction -AbortScan -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -AbortScan
 ```
 
 ### Approve Uninstall
 
 ```PowerShell
-Invoke-S1AgentAction -ApproveUninstall -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -ApproveUninstall
 ```
 
 ### Broadcast Message
 ```PowerShell
-Invoke-S1AgentAction -SendMessage <message> -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -SendMessage <String>
 ```
 
 ### Can run Remote Shell
 
 ```PowerShell
-Invoke-S1AgentAction -CanRunRemoteShell -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -CanRunRemoteShell
 ```
 
 ### Connect to Network
 
 ```PowerShell
-Invoke-S1AgentAction -ReconnectToNetwork -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -ConnectToNetwork
 ```
 
 ### Decommission
 
 ```PowerShell
-Invoke-S1AgentAction -Decommission -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -Decommission
 ```
 
 ### Disable Agent
 
 ```PowerShell
-Invoke-S1AgentAction -DisableAgent -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -DisableAgent
 ```
 
 ### Disable Ranger
 
 ```PowerShell
-Invoke-S1AgentAction -DisableRanger -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -DisableRanger
 ```
 
 ### Disconnect from Network
 
 ```PowerShell
-Invoke-S1AgentAction -DisconnectFromNetwork -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -DisconnectFromNetwork
 ```
 
 ### Enable Agent
 
 ```PowerShell
-Invoke-S1AgentAction -EnableAgent -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -EnableAgent
 ```
 
 ### Enable Ranger
 
 ```PowerShell
-Invoke-S1AgentAction -EnableRanger -Agent <agent_id>
+Invoke-S1AgentAction -AgentID <String[]> -EnableRanger
 ```
 
 ### Fetch Files
+
+```PowerShell
+Invoke-S1FetchFile -AgentID <String> -FilePath <String[]> -Password <String>
+```
 
 ```PowerShell
 Invoke-S1FetchFile -Agent <agent_id> -FilePath "/path/to/file", "C:\path\to\file" -Password "SuperSecretPassword"
@@ -261,27 +265,81 @@ Invoke-S1AgentAction -Agent <agent_id> -Uninstall
 ```
 
 ### Update Software
-Not yet implemented
+
+```PowerShell
+Invoke-S1AgentAction -AgentID $Agent.id -UpdateSoftware -PackageID $Package.id -UpdateTiming immediately
+```
 
 </details>
 
 <details>
 <summary>Agent Support Actions</summary>
 
+### Clear Remote Shell
+Not yet implemented
+
 </details>
 
 <details>
 <summary>Agents</summary>
+
+### Applications
+
+```PowerShell
+Get-S1Application -AgentID <agent_id>
+```
+
+### Count Agents
+Not yet implemented
+
+### Export Agent Logs
+Not yet implemented
+
+### Export Agents
+Not yet implemented
+
+### Get Agents
+
+```PowerShell
+Get-S1Agent -Name <String> -ScanStatus <String[]> -MachineType <String[]> -OSType <String[]> -MitigationMode <String> -Infected <String> -AppVulnerabilityStatus <String[]> -IsPendingUninstall <String> -IsUninstalled <String> -IsDecommissioned <String> -ADQuery <String[]> -Domain <String[]> -LocalIP <String[]> -AgentID <String[]> -GroupID <String[]> -SiteID <String[]> -AccountID <String[]>
+```
+
+### Get Passphrase
+
+```PowerShell
+Get-S1Passphrase
+```
+
+### Processes
+Not implemented. Labeled as obsolete
 
 </details>
 
 <details>
 <summary>Application Inventory</summary>
 
+### Counters
+Not implemented. Labeled as deprecated.
+
+### Grouped App inventory
+Not implemented. Labeled as deprecated.
+
 </details>
 
 <details>
 <summary>Application Risk</summary>
+
+### Export Applications
+Not implemented
+
+### Get Applications
+
+```PowerShell
+Get-S1Application -ApplicationName <String[]> -ApplicationID <String[]> -GroupID <String[]> -SiteID <String[]> -AccountID <String[]> -RiskLevel <String[]> -ApplicationType <String[]> -OS <String[]> -MachineType <String[]> -Decommissioned <String>
+```
+
+### Get CVEs
+Not implemented
 
 </details>
 
@@ -407,6 +465,40 @@ Not yet implemented
 
 <details>
 <summary>Updates</summary>
+
+### Delete Packages
+Not currently supported.
+
+### Deploy System Package
+Not currently supported.
+
+### Download Agent Package
+Not currently supported. Labeled as Deprecated.
+
+### Download Package
+
+### Get Latest Packages
+Available options:
+```PowerShell
+Get-S1Package -OSType <String[]> -Status <String[]> -PackageType <String> -FileExtension <String> -Query <String> -Version <String> -PackageID <String[]> -AccountID <String[]> -SiteID <String[]>
+```
+
+Specific example:
+```PowerShell
+Get-S1Package -Status ga -OSType windows -FileExtension .exe -Version "4.6.12.241" -Query "64bit"
+```
+
+### Latest Packages by OS
+Not currently supported. Labeled as Deprecated.
+
+### Update package
+Not currently supported.
+
+### Upload Agent Package
+Not currently supported.
+
+### Upload System Package
+Not currently supported.
 
 </details>
 
