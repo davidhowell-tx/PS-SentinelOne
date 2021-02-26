@@ -23,17 +23,46 @@ function Get-S1Account {
         # Limit the number of retrieved accounts
         [Parameter()]
         [int]
-        $Count
+        $Count,
+
+        [Parameter(Mandatory=$False)]
+        [ValidateSet(
+            "accountType",
+            "activeAgents",
+            #"activeLicenses", # Returns a 500 error when tested
+            "createdAt",
+            "expiration",
+            "id",
+            "name",
+            "numberOfSites",
+            "state",
+            #"totalLicenses", # Returns a 500 error when tested
+            "updatedAt"
+        )]
+        [String]
+        $SortBy,
+
+        [Parameter(Mandatory=$False)]
+        [ValidateSet("asc", "desc")]
+        [String]
+        $SortOrder,
+
+        [Parameter(Mandatory=$False)]
+        [Switch]
+        $CountOnly
     )
     Process {
         # Log the function and parameters being executed
         $InitializationLog = $MyInvocation.MyCommand.Name
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
-        Write-Log -Message $InitializationLog -Level Informational
+        Write-Log -Message $InitializationLog -Level Verbose
 
         $URI = "/web/api/v2.1/accounts"
         $MaxCount = 100
         $Parameters = @{}
+        if ($SortBy) { $Parameters.Add("sortBy", $SortBy) }
+        if ($SortOrder) { $Parameters.Add("sortOrder", $SortOrder) }
+        if ($CountOnly) { $Parameters.Add("countOnly", $True) }
         switch ($PSCmdlet.ParameterSetName) {
             "Name" { $Parameters.Add("name", $Name) }
             "AccountID" { $Parameters.Add("ids", ($AccountID -join ",")) }
@@ -44,6 +73,10 @@ function Get-S1Account {
             $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse -MaxCount $MaxCount
         }
         
-        Write-Output $Response.data
+        if ($CountOnly) {
+            Write-Output $Response
+        } else {
+            Write-Output $Response.data
+        }
     }
   }
