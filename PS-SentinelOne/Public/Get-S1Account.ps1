@@ -4,9 +4,8 @@ function Get-S1Account {
         Gets information related to SentinelOne Accounts
     
     .NOTES Options not yet implemented:
-        query, states, createdAt, updatedAt, expiration,
-        totalLicenses, activeLicenses, accountType
-        features, sortBy, sortOrder, isDefault
+        isDefault, accountType, expiration, states, createdAt,
+        query, features, updatedAt, totalLicenses, activeLicenses
     #>
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
