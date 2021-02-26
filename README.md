@@ -102,7 +102,7 @@ ConfPath                       C:\Users\<username>\AppData\Local\PS-SentinelOne\
 
 ----------
 ## Capability
-For API coverage, see the [API Coverage documentation](API Coverage.md)
+For API coverage, see the [API Coverage documentation](API%20Coverage.md)
 
 The examples below need to be revised and expanded upon, please bare with me.
 
