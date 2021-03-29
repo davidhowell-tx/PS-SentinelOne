@@ -15,11 +15,10 @@ function Get-S1DvQueryResults {
     $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
     Write-Log -Message $InitializationLog -Level Informational
 
-    $Limit = 100
+
     $URI = "/web/api/v2.1/dv/events"
     $Parameters = @{}
     $Parameters.Add("queryId", $QueryID)
-    $Parameters.Add("limit", $Limit)
     $Method = "GET"
 
     if ($PSCmdlet.ParameterSetName -eq "CountOnly") {
@@ -27,6 +26,6 @@ function Get-S1DvQueryResults {
         return $Response.pagination.totalItems
     }
 
-    $Response = Invoke-S1Query -URI $URI -Method $Method -Parameters $Parameters -Recurse
+    $Response = Invoke-S1Query -URI $URI -Method $Method -Parameters $Parameters -Recurse -MaxCount 100
     return $Response.data
 }
