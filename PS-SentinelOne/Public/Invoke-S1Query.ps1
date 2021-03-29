@@ -6,71 +6,52 @@ function Invoke-S1Query {
     .DESCRIPTION
         Handles the request/response aspect of interacting with the SentinelOne API, including pagination and error handling
     
-    .PARAMETER URI
-        The API URI from the SentinelOne API Documentation, i.e. "/web/api/v2.0/agents"
-    
-    .PARAMETER Parameters
-        Hashtable containing the query string parameters used for filtering the results
-    
-    .PARAMETER ContentType
-        Content Type of the body, if necessary, i.e. "application/json"
-    
-    .PARAMETER Method
-        Rest method for the query.
-    
-    .PARAMETER Count
-        Used to limit the number of results in the response, if supported by the specific API
-    
-    .PARAMETER MaxCount
-        Specify the maximum number of results allowed by the API. This value differs between APIs with a default of 100
-    
-    .PARAMETER Recurse
-        Used to follow the cursor in paginated requests to retrieve all possible results
-    
-    .PARAMETER Body
-        The body value for a POST or PUT request
-    
-    .OUTPUTS
-        [PSCustomObject] in whatever format the API returns
-    
     .EXAMPLE
-        Invoke-S1Query -URI "/web/api/v2.0/agents" -Parameters @{computerName__contains = "hostname"} -Method GET
+        Invoke-S1Query -URI "/web/api/v2.1/agents" -Parameters @{computerName__contains = "hostname"} -Method GET
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
     Param(
+        # The API URI from the SentinelOne API Documentation, i.e. "/web/api/v2.1/agents"
         [Parameter(Mandatory=$True)]
         [String]
         $URI,   
     
+        # Hashtable containing the query string parameters used for filtering the results
         [Parameter(Mandatory=$False)]
         [Hashtable]
         $Parameters,
 
+        # Content type of the body, if necessary, i.e. "application/json"
         [Parameter(Mandatory=$False)]
         [String]
         $ContentType,
 
+        # Rest method for the query.
         [Parameter(Mandatory=$False)]
         [ValidateSet("Get", "Post", "Put", "Delete")]
         [String]
         $Method = "Get",
 
+        # Used to limit the number of results in the response, if supported by the specific API
         [Parameter(Mandatory=$False,ParameterSetName="Count")]
         [Uint32]
         $Count,
 
+        # Specify the maximum number of results allowed by the API. This value differs between APIs with a default of 100
         [Parameter(Mandatory=$False)]
         [Uint32]
         $MaxCount=100,
 
+        # Used to follow the cursor in paginated requests to retrieve all possible results
         [Parameter(Mandatory=$False,ParameterSetName="Recurse")]
         [Switch]
         $Recurse,
 
+        # The body value for a POST or PUT request
         [Parameter(Mandatory=$False)]
         $Body
     )
-    if ($URI -ne "/web/api/v2.0/users/login") {
+    if ($URI -notlike "*/users/login") {
         # Log the function and parameters being executed
         $InitializationLog = $MyInvocation.MyCommand.Name
         $MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { $InitializationLog = $InitializationLog + " -$($_.Key) $($_.Value)"}
@@ -121,7 +102,7 @@ function Invoke-S1Query {
     $Request.Add("Headers", $Headers)
 
     # Start building request URI
-    $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$($URI.Trim("/"))"
+    $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL.Trim("/"), $URI.Trim("/") -join "/")"
     $QueryString = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
 
     # Add any parameters supplied with -Parameters switch to Query String
@@ -164,7 +145,7 @@ function Invoke-S1Query {
     }
 
     if ($Parameters.countOnly) {
-        Write-Output $Response.pagination.totalItems
+        return $Response.pagination.totalItems
     } else {
         Write-Output $Response
     }
@@ -172,7 +153,7 @@ function Invoke-S1Query {
     # Recurse through all results using the pagination cursor
     if ($Recurse) {
         while ($Response.pagination.nextCursor) {
-            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$($URI.Trim("/"))"
+            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL.Trim("/"), $URI.Trim("/") -join "/")"
             $QueryString.Add("cursor", $Response.pagination.nextCursor)
             $URIBuilder.Query = $QueryString.ToString()
             $Request.URI = $URIBuilder.Uri.OriginalString
@@ -187,7 +168,7 @@ function Invoke-S1Query {
     # Recurse through results until requested count is met. This could result in too many results, the commandlets should deal with returning exact numbers
     if ($Count) {
         while ($Count -gt 0 -and $Response.pagination.nextCursor) {
-            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL)$($URI.Trim("/"))"
+            $URIBuilder = [System.UriBuilder]"$($Script:PSSentinelOne.ManagementURL.Trim("/"), $URI.Trim("/") -join "/")"
             $QueryString.Add("cursor", $Response.pagination.nextCursor)
             $URIBuilder.Query = $QueryString.ToString()
             $Request.URI = $URIBuilder.Uri.OriginalString
