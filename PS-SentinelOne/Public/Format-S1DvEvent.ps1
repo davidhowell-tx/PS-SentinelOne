@@ -11,7 +11,7 @@ function Format-S1DvEvent {
             "srcProcName", "srcProcDisplayName", "srcProcUser", "srcProcPid", "srcProcImagePath", "srcProcCmdLine", "srcProcIntegrityLevel", "srcProcImageMd5", "srcProcImageSha1", "srcProcImageSha256", "srcProcStartTime", "srcProcPublisher",
             "srcProcParentName", "srcProcParentImagePath", "srcProcParentPid", "srcProcParentImageMd5", "srcProcParentImageSha1", "srcProcParentImageSha256", "srcProcParentStartTime"
         )
-
+        $CommandScriptProperties = @("processCmd")
         $IpProperties = @( "netConnStatus", "netEventDirection", "srcIp", "srcPort", "dstIp", "dstPort", "netConnInCount", "netConnOutCount" )
         $DnsProperties = @( "dnsRequest", "dnsResponse" )
         $FileProperties = @( "tgtFilePath", "tgtFileLocation", "tgtFileMd5", "tgtFileSha1", "tgtFileSha256", "tgtFileCreatedAt", "tgtFileModifiedAt", "tgtFileOldMd5", "tgtFileOldPath", "tgtFileOldSha1", "tgtFileOldSha256", "newFileName" )
@@ -22,6 +22,9 @@ function Format-S1DvEvent {
     }
     Process {
         switch ($InputObject.objectType) {
+            "command_script" {
+                $InputObject | Select-Object -Property ($BaseProperties + $CommandScriptProperties)
+            }
             "ip" {
                 $InputObject | Select-Object -Property ($BaseProperties + $IpProperties)
             }
