@@ -75,20 +75,16 @@ function Invoke-S1AgentAction {
         [String]
         $SetExternalID,
 
-        # Move agents to a new group
+        # Move agents
         [Parameter(Mandatory=$True,ParameterSetName="MoveToGroup")]
+        [Parameter(Mandatory=$True,ParameterSetName="MoveToSite")]
         [Switch]
-        $MoveToGroup,
+        $Move,
 
         # The group ID to which the targeted agents should be moved
         [Parameter(Mandatory=$True,ParameterSetName="MoveToGroup")]
         [String]
         $GroupID,
-
-        # Move agents to a new site
-        [Parameter(Mandatory=$True,ParameterSetName="MoveToSite")]
-        [Switch]
-        $MoveToSite,
 
         # The site ID to which the targeted agents should be moved
         [Parameter(Mandatory=$True,ParameterSetName="MoveToSite")]
@@ -292,12 +288,12 @@ function Invoke-S1AgentAction {
         }
         "MoveToSite" {
             $URI = "/web/api/v2.1/agents/actions/move-to-site"
-            $Body.Add("data", @{"targetSiteId" = $SiteID})
+            $Body.data.Add("targetSiteId", $SiteID)
             $OutputMessage = "Move to site $SiteID initiated for"
         }
         "MoveToConsole" {
             $URI = "/web/api/v2.1/agents/actions/move-to-console"
-            $Body.Add("data", @{"token" = $ConsoleSiteToken})
+            $Body.data.Add("token", $ConsoleSiteToken)
             $OutputMessage = "Move to console $ConsoleSiteToken initiated for"
         }
         "FetchLogs" {
