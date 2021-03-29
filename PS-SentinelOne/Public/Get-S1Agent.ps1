@@ -1,16 +1,11 @@
 function Get-S1Agent {
     <#
     .SYNOPSIS
-        Retrieves information related to SentinelOne agents 
-    
-    .PARAMETER Name
-        Filter agents by name
-    
-    .PARAMETER AgentID
-        Filter applications by agent ID
+        Retrieves information related to SentinelOne agents  
     #>
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
+        # Filter agents by name
         [Parameter(Mandatory=$False)]
         [String]
         $Name,
@@ -77,6 +72,7 @@ function Get-S1Agent {
         [String[]]
         $LocalIP,
 
+        # Filter applications by agent ID
         [Parameter(Mandatory=$False)]
         [String[]]
         $AgentID,
