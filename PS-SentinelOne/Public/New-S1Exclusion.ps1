@@ -5,15 +5,27 @@ function New-S1Exclusion {
     #>
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory=$True,ParameterSetName="Path")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountHash")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteHash")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupHash")]
+        [String]
+        $Hash,
+
+        [Parameter(Mandatory=$True,ParameterSetName="AccountPath")]
+        [Parameter(Mandatory=$True,ParameterSetName="SitePath")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupPath")]
         [String]
         $Path,
 
-        [Parameter(Mandatory=$False,ParameterSetName="Path")]
+        [Parameter(Mandatory=$False,ParameterSetName="AccountPath")]
+        [Parameter(Mandatory=$False,ParameterSetName="SitePath")]
+        [Parameter(Mandatory=$False,ParameterSetName="GroupPath")]
         [Switch]
         $IncludeSubfolders,
 
-        [Parameter(Mandatory=$True,ParameterSetName="Path")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountPath")]
+        [Parameter(Mandatory=$True,ParameterSetName="SitePath")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupPath")]
         [ValidateSet(
             "suppress",
             "suppress_dfi_only",
@@ -26,20 +38,22 @@ function New-S1Exclusion {
         [String]
         $ExclusionType,
 
-        [Parameter(Mandatory=$True,ParameterSetName="Hash")]
-        [String]
-        $Hash,
-
-        [Parameter(Mandatory=$True,ParameterSetName="Certificate")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountCertificate")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteCertificate")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupCertificate")]
         [String]
         $Certificate,
 
-        [Parameter(Mandatory=$True,ParameterSetName="Browser")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountBrowser")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteBrowser")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupBrowser")]
         [ValidateSet("chrome", "firefox", "edge", "ie")]
         [String]
         $Browser,
 
-        [Parameter(Mandatory=$True,ParameterSetName="FileType")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountFileType")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteFileType")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupFileType")]
         [String]
         $FileType,
 
@@ -51,16 +65,28 @@ function New-S1Exclusion {
         [Parameter(Mandatory=$False)]
         [String]
         $Description,
-
-        [Parameter(Mandatory=$True,ParameterSetName="GroupLevel")]
+        
+        [Parameter(Mandatory=$True,ParameterSetName="GroupBrowser")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupCertificate")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupFileType")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupHash")]
+        [Parameter(Mandatory=$True,ParameterSetName="GroupPath")]
         [String]
         $GroupID,
 
-        [Parameter(Mandatory=$True,ParameterSetName="SiteLevel")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteBrowser")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteCertificate")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteFileType")]
+        [Parameter(Mandatory=$True,ParameterSetName="SiteHash")]
+        [Parameter(Mandatory=$True,ParameterSetName="SitePath")]
         [String]
         $SiteID,
-
-        [Parameter(Mandatory=$True,ParameterSetName="AccountLevel")]
+        
+        [Parameter(Mandatory=$True,ParameterSetName="AccountBrowser")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountCertificate")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountFileType")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountHash")]
+        [Parameter(Mandatory=$True,ParameterSetName="AccountPath")]
         [String]
         $AccountID
     )
@@ -74,6 +100,8 @@ function New-S1Exclusion {
             data = @{
                 osType = $OSType
                 description = $Description
+                type = ""
+                value = ""
             }
             filter = @{}
         }
@@ -83,10 +111,10 @@ function New-S1Exclusion {
                 Write-Error "Path is not valid"
                 return
             }
-            $Body.data.Add("type", "path")
+            $Body.data.type = "path"
             $Body.data.Add("includeSubfolders", "false")
             $Body.data.Add("inject","true")
-            $Body.data.Add("value", $Path)
+            $Body.data.value = $Path
 
             if ($Path -match "^.+\\$") {
                 $Body.data.Add("pathExclusionType", "folder")
@@ -98,20 +126,20 @@ function New-S1Exclusion {
             }
         }
         if ($Certificate) {
-            $Body.data.Add("type", "certificate")
-            $Body.data.Add("value", $Certificate)
+            $Body.data.type = "certificate"
+            $Body.data.value = $Certificate
         }
         if ($Browser) {
-            $Body.data.Add("type", "browser")
-            $Body.data.Add("value", $Browser)
+            $Body.data.type = "browser"
+            $Body.data.value = $Browser
         }
         if ($FileType) {
-            $Body.data.Add("type", "file_type")
-            $Body.data.Add("value", $FileType)
+            $Body.data.type = "file_type"
+            $Body.data.value = $FileType
         }
         if ($Hash) {
-            $Body.data.Add("type", "white_hash")
-            $Body.data.Add("value", $Hash)
+            $Body.data.type = "white_hash"
+            $Body.data.value = $Hash
         }
         
 
@@ -119,7 +147,7 @@ function New-S1Exclusion {
         if ($SiteID) { $Body.filter.Add("siteIds", @($SiteID -join ",")) }
         if ($AccountID) { $Body.filter.Add("accountIds", @($AccountID -join ",")) }
         
-        $URI = "/web/api/v2.1/restrictions"
+        $URI = "/web/api/v2.1/exclusions"
         $Response = Invoke-S1Query -URI $URI -Method POST -Body ($Body | ConvertTo-Json) -ContentType "application/json"
         Write-Output $Response.data
     }
