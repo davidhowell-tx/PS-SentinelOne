@@ -26,7 +26,7 @@ Get-S1Account -AccountID <id>
 ### Get Accounts
 
 ```PowerShell
-Get-S1Account
+Get-S1Account -Name <string> -AccountID <string[]> -Count <int> -SortBy {accountType | activeAgents | createdAt | expiration | id | name | numberOfSites | state | updatedAt} -SortOrder {asc | desc} -CountOnly
 ```
 
 ### Get Uninstall Password
@@ -445,6 +445,36 @@ Not implemented
 
 <details>
 <summary>System</summary>
+
+### Cache Status
+
+```PowerShell
+Get-S1System -CacheStatus
+```
+
+### Database Status
+
+```PowerShell
+Get-S1System -DatabaseStatus
+```
+
+### Get System Config
+Not implemented
+
+### Set System Config
+Not implemented
+
+### System Info
+
+```PowerShell
+Get-S1System -Info
+```
+
+### System Status
+
+```PowerShell
+Get-S1System -Status
+```
 
 </details>
 
