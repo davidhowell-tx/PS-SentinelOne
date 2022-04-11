@@ -2,10 +2,6 @@ function Get-S1Account {
     <#
     .SYNOPSIS
         Gets information related to SentinelOne Accounts
-    
-    .NOTES Options not yet implemented:
-        isDefault, accountType, expiration, states, createdAt,
-        query, features, updatedAt, totalLicenses, activeLicenses
     #>
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
@@ -64,16 +60,26 @@ function Get-S1Account {
         if ($CountOnly) { $Parameters.Add("countOnly", $True) }
         if ($Name) { $Parameters.Add("name", $Name) }
         if ($AccountID) { $Parameters.Add("ids", ($AccountID -join ",")) }
-        if ($Count) {
-            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Count $Count -MaxCount $MaxCount
-        } else {
-            $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse -MaxCount $MaxCount
+
+        $Request = @{
+            URI = $URI
+            Method = "Get"
+            Parameters = $Parameters
+            MaxCount = $MaxCount
         }
+
+        if ($Count) {
+            $Request.Add("Count",$Count)
+        } else {
+            $Request.Add("Recurse",$True)
+        }
+
+        $Response = Invoke-S1Query @Request
         
         if ($CountOnly) {
             Write-Output $Response
         } else {
-            Write-Output $Response.data
+            Write-Output $Response.data | Add-CustomType -CustomTypeName "SentinelOne.Account"
         }
     }
   }

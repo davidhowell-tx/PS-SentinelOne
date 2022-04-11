@@ -147,9 +147,9 @@ function Get-S1Activity {
         if ($CountOnly) {
             Write-Output $Response
         } elseif ($Count) {
-            Write-Output $Response.data[0..($Count-1)]
+            Write-Output $Response.data[0..($Count-1)] | Add-CustomType -CustomTypeName "SentinelOne.Activity"
         } else {
-            Write-Output $Response.data
+            Write-Output $Response.data | Add-CustomType -CustomTypeName "SentinelOne.Activity"
         }
     }
 }

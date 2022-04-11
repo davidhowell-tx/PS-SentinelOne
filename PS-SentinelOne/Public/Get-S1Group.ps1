@@ -2,53 +2,36 @@ function Get-S1Group {
     <#
     .SYNOPSIS
         Gets information related to SentinelOne Groups
-    
-    .PARAMETER Name
-        Filter groups by name
-    
-    .PARAMETER GroupID
-        Filter groups by group ID
-
-    .PARAMETER SiteID
-        Filter groups by site ID
-    
-    .PARAMETER AccountID
-        Filter groups by account ID
-
-    .PARAMETER Type
-        Filter groups by type, i.e. Static or Dynamic
-
-    .PARAMETER RegistrationToken
-        Get a group based on its registration token
-    
-    .NOTES Options not yet implemented:
-        updatedAt__gt, type, updatedAt__gte, updatedAt__lt, updatedAt__lte,
-        rank, sortBy, sortOrder, query 
-
     #>
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
+        # Filter groups by name
         [Parameter(Mandatory=$True,ParameterSetName="Name")]
         [String]
         $Name,
 
+        # Filter groups by group ID
         [Parameter(Mandatory=$True,ParameterSetName="GroupID")]
         [String[]]
         $GroupID,
 
+        # Filter groups by site ID
         [Parameter(Mandatory=$False)]
         [String[]]
         $SiteID,
 
+        # Filter groups by account ID
         [Parameter(Mandatory=$False)]
         [String[]]
         $AccountID,
 
+        # Filter groups by type, i.e. Static or Dynamic
         [Parameter(Mandatory=$False)]
         [ValidateSet("static","dynamic")]
         [String]
         $Type,
 
+        # Get a group based on its registration token
         [Parameter(Mandatory=$True,ParameterSetName="RegistrationToken")]
         [String]
         $RegistrationToken
@@ -69,7 +52,6 @@ function Get-S1Group {
         if ($Type) { $Parameters.Add("type", $Type.ToLower()) }
         if ($RegistrationToken) { $Parameters.Add("registrationToken", $RegistrationToken) }
         $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
-        Write-Output $Response.data
+        Write-Output $Response.data | Add-CustomType -CustomTypeName "SentinelOne.Group"
     }
-    End {}
 }

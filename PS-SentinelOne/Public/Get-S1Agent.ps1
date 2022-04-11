@@ -10,6 +10,12 @@ function Get-S1Agent {
         [String]
         $Name,
 
+        # Filter agents by last logged in user name
+        [Parameter(Mandatory=$False)]
+        [String]
+        $Username,
+
+        # Filter agents by Scan Status
         [Parameter(Mandatory=$False)]
         [ValidateSet("none", "started", "aborted", "finished")]
         [String[]]
@@ -116,6 +122,6 @@ function Get-S1Agent {
         if ($SiteID) { $Parameters.Add("siteIds", ($SiteID -join ",") ) }
         if ($AccountID) { $Parameters.Add("accountIds", ($AccountID -join ",") ) }
         $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
-        Write-Output $Response.data
+        Write-Output $Response.data | Add-CustomType -CustomTypeName "SentinelOne.Agent"
     }
 }

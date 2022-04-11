@@ -60,6 +60,6 @@ function Get-S1Blacklist {
         if ($AccountID) { $Parameters.Add("accountIds", ($AccountID -join ",") ) }
         
         $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters -Recurse
-        Write-Output $Response.data
+        Write-Output $Response.data | Add-CustomType -CustomTypeName "SentinelOne.Blacklist"
     }
 }
