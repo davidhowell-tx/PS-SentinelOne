@@ -9,7 +9,7 @@ function Get-S1DvEvents {
         $Limit = 1000,
 
         [Parameter(Mandatory=$True,ParameterSetName="TimeFrame")]
-        [ValidateSet("Last Hour","Last 24 Hours","Today", "Last 48 Hours", "Last 7 Days", "Last 30 Days", "This Month", "Last 2 Months", "Last 3 Months")]
+        [ValidateSet("Last Hour","Last 24 Hours","Last 48 Hours","Last 7 Days","Last 14 Days","Last 30 Days","Last 2 Months","Last 3 Months")]
         [String]
         $TimeFrame,
 

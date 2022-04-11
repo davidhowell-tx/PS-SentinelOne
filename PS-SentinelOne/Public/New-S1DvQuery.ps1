@@ -14,7 +14,7 @@ function New-S1DvQuery {
         $Limit = 1000,
 
         [Parameter(Mandatory=$True,ParameterSetName="TimeFrame")]
-        [ValidateSet("Last Hour","Last 24 Hours","Today", "Last 48 Hours", "Last 7 Days", "Last 30 Days", "This Month", "Last 2 Months", "Last 3 Months")]
+        [ValidateSet("Last Hour","Last 24 Hours","Last 48 Hours","Last 7 Days","Last 14 Days","Last 30 Days","Last 2 Months","Last 3 Months")]
         [String]
         $TimeFrame,
 
@@ -49,13 +49,12 @@ function New-S1DvQuery {
         switch ($TimeFrame) {
             "Last Hour" { $FromDate = $ToDate.AddHours(-1) }
             "Last 24 Hours" { $FromDate = $ToDate.AddDays(-1) }
-            "Today" { $FromDate = [DateTime]::Today }
             "Last 48 Hours" { $FromDate = $ToDate.AddDays(-2) }
             "Last 7 Days" { $FromDate = $ToDate.AddDays(-7) }
+            "Last 14 Days" { $FromDate = $ToDate.AddDays(-14) }
             "Last 30 Days" { $FromDate = $ToDate.AddDays(-30) }
-            "This Month" { $FromDate = Get-Date -Year $ToDate.Year -Month $ToDate.Month -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0 }
-            "Last 2 Months" { $FromDate = Get-Date -Year $ToDate.Year -Month $ToDate.AddMonths(-1).Month -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0 }
-            "Last 3 Months" { $FromDate = Get-Date -Year $ToDate.Year -Month $ToDate.AddMonths(-2).Month -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0 }
+            "Last 2 Months" { $FromDate = $ToDate.AddMonths(-2) }
+            "Last 3 Months" { $FromDate = $ToDate.AddMonths(-3) }
         }
     }
     $To = Convert-S1Time -Value $ToDate
