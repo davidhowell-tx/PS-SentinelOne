@@ -1,4 +1,30 @@
 function Set-S1Recipients {
+	<#
+	.NOTES 
+		Author:			Chris Stone <chris.stone@nuwavepartners.com>
+		Date-Modified:	2022-08-23 09:42:47
+
+    .SYNOPSIS
+        Change/Create Recipient for Notifications
+
+    .PARAMETER AccountID
+        Filter settings by Account scope
+    
+    .PARAMETER SiteID
+        Filter settings by Site scope
+
+	.PARAMETER Email 
+		Email address to set/change
+
+	.PARAMETER ID
+		Recipient ID to Change. Only specify when changing an existing recipient.
+
+	.PARAMETER Name
+		Name to set/change
+
+	.PARAMETER SMS
+		SMS to set/change (deprecated)
+    #>
 
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
@@ -8,7 +34,7 @@ function Set-S1Recipients {
 
 		[Parameter(Mandatory=$False)]
         [String[]]
-        $SiteIDs,
+        $SiteID,
 
 		[Parameter(Mandatory=$False)]
         [String]
@@ -40,7 +66,7 @@ function Set-S1Recipients {
 		}
 
 		If ($AccountID)	{ $Body.filter += @{ accountIds = ($AccountID -join ',') }}
-		If ($SiteIDs)	{ $Body.filter += @{ siteIds = ($SiteIDs -join ',') }}
+		If ($SiteID)	{ $Body.filter += @{ SiteID = ($SiteID -join ',') }}
 
 		If ($Email)		{ $Body.data += @{ email = ($Email) }}
 		If ($ID)		{ $Body.data += @{ id = ($ID) }}

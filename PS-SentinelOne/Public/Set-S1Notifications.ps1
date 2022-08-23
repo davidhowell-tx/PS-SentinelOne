@@ -1,4 +1,21 @@
 function Set-S1Notifications {
+    <#
+	.NOTES 
+		Author:			Chris Stone <chris.stone@nuwavepartners.com>
+		Date-Modified:	2022-08-23 09:42:54
+
+    .SYNOPSIS
+        Change Notification settings on a Site
+
+    .PARAMETER AccountID
+        Filter settings by Account scope
+    
+    .PARAMETER SiteId
+        Filter settings by Site scope
+
+	.PARAMETER Notifications
+		Hashtable of Settings, use Get-S1Notifications for hashtable format
+    #>
 
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(

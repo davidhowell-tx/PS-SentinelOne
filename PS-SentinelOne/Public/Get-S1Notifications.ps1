@@ -1,4 +1,17 @@
 function Get-S1Notifications {
+    <#
+    .SYNOPSIS
+        Retrieve Notification Settings for Site(s)
+
+    .PARAMETER AccountID
+        Filter settings by Account scope
+    
+    .PARAMETER SiteId
+        Filter settings by Site scope
+
+	.PARAMETER ResponseFilter
+		Set the type of data returned. Raw for the full structure, Data for editable settings.
+    #>
 
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(

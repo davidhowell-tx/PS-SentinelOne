@@ -1,4 +1,15 @@
 function Remove-S1Recipients {
+	<#
+	.NOTES 
+		Author:			Chris Stone <chris.stone@nuwavepartners.com>
+		Date-Modified:	2022-08-23 09:43:08
+
+    .SYNOPSIS
+        Remove Recipient for Notifications
+
+    .PARAMETER ID
+		ID of the Recipient to Remove
+    #>
 
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(

@@ -1,5 +1,31 @@
 function Get-S1Recipients {
+	<#
+	.NOTES 
+		Author:			Chris Stone <chris.stone@nuwavepartners.com>
+		Date-Modified:	2022-08-23 09:44:09
 
+    .SYNOPSIS
+        Get Recipients for Notifications
+
+    .PARAMETER AccountID
+        Filter settings by Account scope
+    
+    .PARAMETER SiteID
+        Filter settings by Site scope
+
+	.PARAMETER Email 
+		Email address to set/change
+
+	.PARAMETER ID
+		Recipient ID to Change. Only specify when changing an existing recipient.
+
+	.PARAMETER Name
+		Name to set/change
+
+	.PARAMETER SMS
+		SMS to set/change (deprecated)
+    #>
+	
     [CmdletBinding(DefaultParameterSetName="All")]
     Param(
         [Parameter(Mandatory=$False)]
@@ -20,7 +46,7 @@ function Get-S1Recipients {
 
 		[Parameter(Mandatory=$False)]
         [String[]]
-        $SiteIDs,
+        $SiteID,
 
 		[Parameter(Mandatory=$False)]
         [String]
@@ -38,7 +64,7 @@ function Get-S1Recipients {
 		if ($Email)		{ $Parameters.Add("email", $Email) }
 		if ($Name)		{ $Parameters.Add("name", $name) }
 		if ($Query)		{ $Parameters.Add("query", $Query) }
-		if ($SiteIDs)	{ $Parameters.Add("siteIds", ($SiteIDs -join ",")) }
+		if ($SiteID)	{ $Parameters.Add("SiteID", ($SiteID -join ",")) }
 		if ($SMS)		{ $Parameters.Add("sms", $SMS) }
         $Response = Invoke-S1Query -URI $URI -Method GET -Parameters $Parameters
 
