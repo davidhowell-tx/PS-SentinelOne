@@ -82,7 +82,7 @@ function Get-S1Application {
         if ($AgentID) { $Parameters.Add("ids", ($AgentID -join ","))}
         if ($CVEIDs) { $Parameters.Add("cveIds", ($CVEIDs -join ","))}
         if ($ApplicationName) { $Parameters.Add("name__contains", ($ApplicationName -join ",") ) }
-        if ($ApplicationID) { $Parameters.Add("ids", ($ApplicationID -join ",") ) }
+        if ($ApplicationID) { $Parameters.Add("applicationIds", ($ApplicationID -join ",") ) }
         if ($GroupID) { $Parameters.Add("groupIds", ($GroupID -join ",") ) }
         if ($SiteID) { $Parameters.Add("siteIds", ($SiteID -join ",") ) }
         if ($AccountID) { $Parameters.Add("accountIds", ($AccountID -join ",") ) }
